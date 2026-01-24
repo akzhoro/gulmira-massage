@@ -29,8 +29,9 @@ h1, h2, h3 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=2070') center/cover;
+    /* Обновленный фон: более мягкий и профессиональный */
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), 
+                url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=2070') center/cover;
     color: var(--white);
     padding: 20px;
 }
