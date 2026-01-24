@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гульмира Жанабекова | Экспертный массаж</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Весь стиль теперь внутри HTML, чтобы ничего не слетало */
+        :root {
+            --gold: #c5a059;
+            --dark: #1c1c1c;
+            --light-bg: #fdfcf9;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 400; color: var(--dark); }
+
+        /* Главный блок */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1544161515-436cefb657f8?q=80&w=2070') center/cover;
+            color: var(--white);
+            padding: 20px;
+        }
+
+        .hero h1 { font-size: clamp(2.5rem, 7vw, 4rem); color: var(--white); margin: 0; letter-spacing: 2px; }
+        .subtitle { font-size: 1.2rem; margin: 20px 0; font-weight: 300; }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background-color: var(--gold);
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            border: 1px solid var(--gold);
+        }
+
+        .btn:hover { background: transparent; backdrop-filter: blur(5px); }
+
+        /* Секции */
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; text-align: center; }
+        
+        h2 { font-size: 2.2rem; margin-bottom: 50px; }
+        h2::after { content: ""; display: block; width: 60px; height: 1px; background: var(--gold); margin: 15px auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .info-block { background: var(--white); padding: 40px; border-top: 3px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        /* Список услуг */
+        .services-list { 
+            list-style: none; 
+            padding: 0; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+        .services-list li { 
+            background: var(--white); 
+            padding: 25px; 
+            border: 1px solid #eee; 
+            transition: 0.3s;
+        }
+        .services-list li:hover { border-color: var(--gold); transform: translateY(-5px); }
+
+        footer { background: var(--dark); color: #888; padding: 60px 20px; text-align: center; }
+        footer p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-text">
+        <h1>Гульмира Жанабекова</h1>
+        <p class="subtitle">Медицинский эксперт с 15-летним стажем</p>
+        <a href="https://wa.me/77016092225" class="btn">Записаться в WhatsApp</a>
+    </div>
+</header>
+
+<section class="about">
+    <h2>Опыт и Квалификация</h2>
+    <div class="grid">
+        <div class="info-block">
+            <h3>Образование</h3>
+            <p>Дипломированный фельдшер (Медицинский колледж г. Астана).</p>
+        </div>
+        <div class="info-block">
+            <h3>Специфика</h3>
+            <p>6 лет работы в скорой помощи. Умение оказывать доврачебную помощь.</p>
+        </div>
+    </div>
+</section>
+
+<section class="services">
+    <h2>Услуги премиум-класса</h2>
+    <ul class="services-list">
+        <li>Массаж Пяти Континентов (Новинка 2025)</li>
+        <li>Скульптурный массаж лица</li>
+        <li>Аппаратная коррекция фигуры и Миофасциальный массаж</li>
+        <li>Детский массаж (в том числе для детей с ОВЗ)</li>
+    </ul>
+</section>
+
+<footer>
+    <p>г. Астана, пр. Бауыржана Момышулы 2а</p>
+    <p>Тел: 8 701 609 22 25</p>
+    <p style="margin-top:20px; font-size: 0.7rem;">&copy; 2026 Все права защищены</p>
+</footer>
+
+</body>
+</html>
