@@ -1,16 +1,12 @@
-/* Общие настройки */
 :root {
-    --gold: #c5a059;       /* Премиальный золотой */
-    --dark: #1c1c1c;       /* Глубокий черный */
-    --light-bg: #fdfcf9;   /* Цвет слоновой кости */
+    --gold: #c5a059;
+    --dark: #1c1c1c;
+    --light-bg: #fdfcf9;
     --text: #333333;
     --white: #ffffff;
 }
 
-* {
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
+* { box-sizing: border-box; scroll-behavior: smooth; }
 
 body {
     margin: 0;
@@ -27,41 +23,27 @@ h1, h2, h3 {
     color: var(--dark);
 }
 
-/* Главный экран (Hero) */
 .hero {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=2070') center/cover;
     color: var(--white);
     padding: 20px;
 }
 
-.hero-text h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
-    margin: 0;
-    color: var(--white);
-    letter-spacing: 2px;
-}
+.hero-text h1 { font-size: clamp(2.2rem, 8vw, 4.5rem); margin: 0; color: var(--white); letter-spacing: 2px; }
+.subtitle { font-size: 1.2rem; margin: 20px 0; font-weight: 300; }
 
-.subtitle {
-    font-size: 1.2rem;
-    margin: 20px 0;
-    font-weight: 300;
-    letter-spacing: 1px;
-}
-
-/* Кнопка WhatsApp */
 .btn {
     display: inline-block;
     padding: 18px 40px;
     background-color: var(--gold);
     color: var(--white);
     text-decoration: none;
-    border-radius: 2px; /* Прямые углы выглядят дороже */
     text-transform: uppercase;
     font-size: 0.9rem;
     letter-spacing: 2px;
@@ -69,89 +51,40 @@ h1, h2, h3 {
     border: 1px solid var(--gold);
 }
 
-.btn:hover {
-    background-color: transparent;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 10px 20px rgba(197, 160, 89, 0.3);
-}
+.btn:hover { background-color: transparent; backdrop-filter: blur(5px); }
 
-/* Секции */
-section {
-    padding: 100px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; text-align: center; }
 
-h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 60px;
-    position: relative;
-}
+h2 { font-size: 2.2rem; margin-bottom: 50px; }
+h2::after { content: ""; display: block; width: 50px; height: 1px; background: var(--gold); margin: 20px auto; }
 
-h2::after {
-    content: "";
-    display: block;
-    width: 50px;
-    height: 1px;
-    background: var(--gold);
-    margin: 20px auto;
-}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.info-block { background: var(--white); padding: 40px; border-top: 3px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.03); text-align: left; }
+.info-block h3 { margin-top: 0; }
 
-/* Сетка Опыт и Образование */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-}
-
-.info-block {
-    background: var(--white);
-    padding: 40px;
-    border-radius: 0;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-    border-top: 3px solid var(--gold);
-}
-
-/* Услуги */
 .services-list {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
 .services-list li {
     background: var(--white);
-    padding: 25px;
+    padding: 30px;
     border: 1px solid #eee;
-    text-align: center;
     transition: 0.3s;
 }
 
-.services-list li:hover {
-    border-color: var(--gold);
-    transform: translateY(-5px);
-}
+.services-list li:hover { border-color: var(--gold); transform: translateY(-5px); }
 
-/* Контакты */
-.contact {
-    text-align: center;
-    background-color: #f4f1ea;
-}
+.contact { background-color: #f4f1ea; }
+.contact a { color: var(--dark); text-decoration: none; font-weight: 600; }
 
-footer {
-    padding: 50px 20px;
-    background: var(--dark);
-    color: #888;
-    text-align: center;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-}
+footer { padding: 40px 20px; background: var(--dark); color: #888; text-align: center; font-size: 0.8rem; }
 
-/* Мобильная адаптация */
 @media (max-width: 768px) {
-    .hero-text h1 { font-size: 2.5rem; }
+    .hero-text h1 { font-size: 2.2rem; }
     section { padding: 60px 20px; }
 }
