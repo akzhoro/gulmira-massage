@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Твой конфиг, который ты скинул
 const firebaseConfig = {
   apiKey: "AIzaSyBR1RGxAbSxUhEDejPIhiHpGJMs0vXIG8U",
   authDomain: "gulmira-massage.firebaseapp.com",
@@ -14,20 +13,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- МЕНЮ БУРГЕР (Для всех страниц) ---
-const initMenu = () => {
-    const burger = document.querySelector('.burger');
-    const nav = document.querySelector('.nav-links');
-    if (burger && nav) {
-        burger.onclick = () => {
-            nav.classList.toggle('nav-active');
-            burger.classList.toggle('toggle');
-        };
-    }
-};
-initMenu();
+// --- МЕНЮ БУРГЕР ---
+const burger = document.querySelector('.burger');
+const nav = document.querySelector('.nav-links');
+if (burger) {
+    burger.onclick = () => {
+        nav.classList.toggle('nav-active');
+        burger.classList.toggle('toggle');
+    };
+}
 
-// --- ВХОД / ВЫХОД ---
+// --- АВТОРИЗАЦИЯ (Экспортируем в window для доступа из HTML) ---
 window.login = () => {
     const u = document.getElementById('user').value;
     const p = document.getElementById('pass').value;
@@ -44,14 +40,13 @@ window.logout = () => {
     window.location.href = "index.html";
 };
 
-// --- ОТПРАВКА ЗАЯВКИ В FIREBASE ---
+// --- ОНЛАЙН ЗАПИСЬ ---
 const bookingForm = document.getElementById('bookingForm');
 if (bookingForm) {
     bookingForm.onsubmit = async (e) => {
         e.preventDefault();
         const btn = bookingForm.querySelector('button');
-        btn.disabled = true;
-        btn.innerText = "Отправка...";
+        btn.disabled = true; btn.innerText = "Отправка...";
 
         try {
             const formData = new FormData(bookingForm);
@@ -64,54 +59,39 @@ if (bookingForm) {
             });
             document.getElementById('bookingMsg').style.display = 'block';
             bookingForm.reset();
-        } catch (err) {
-            alert("Ошибка базы данных! Проверьте вкладку Rules в Firebase.");
+        } catch (error) {
+            alert("Ошибка! Проверь Rules в Firebase");
         } finally {
-            btn.disabled = false;
-            btn.innerText = "Записаться";
+            btn.disabled = false; btn.innerText = "Записаться";
         }
     };
 }
 
-// --- АДМИНКА: ЗАГРУЗКА И УДАЛЕНИЕ ---
+// --- АДМИНКА ---
 const bookingList = document.getElementById('bookingList');
 if (bookingList) {
     const loadData = async () => {
-        try {
-            const q = query(collection(db, "bookings"), orderBy("createdAt", "desc"));
-            const snap = await getDocs(q);
-            bookingList.innerHTML = '';
-            
-            if (snap.empty) {
-                bookingList.innerHTML = '<p>Новых записей пока нет.</p>';
-            }
-
-            snap.forEach((item) => {
-                const data = item.data();
-                const div = document.createElement('div');
-                div.className = 'info-block';
-                div.style.marginBottom = '15px';
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <strong>👤 ${data.name}</strong> — <a href="tel:${data.phone}">${data.phone}</a><br>
-                            📅 ${data.date} | 💆 ${data.service}
-                        </div>
-                        <button onclick="deleteItem('${item.id}')" style="background:#ff4d4d; color:white; border:none; padding:8px 12px; cursor:pointer; border-radius:5px;">Удалить</button>
+        const q = query(collection(db, "bookings"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        bookingList.innerHTML = '';
+        snap.forEach((item) => {
+            const data = item.data();
+            const div = document.createElement('div');
+            div.className = 'info-block';
+            div.style.marginBottom = '15px';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong>👤 ${data.name}</strong> — <a href="tel:${data.phone}">${data.phone}</a><br>
+                        📅 ${data.date} | 💆 ${data.service}
                     </div>
-                `;
-                bookingList.appendChild(div);
-            });
-        } catch (e) {
-            bookingList.innerHTML = '<p style="color:red">Ошибка доступа. Проверьте Rules в Firestore.</p>';
-        }
+                    <button onclick="deleteItem('${item.id}')" style="background:#ff4d4d; color:white; border:none; padding:8px; cursor:pointer; border-radius:5px;">Удалить</button>
+                </div>`;
+            bookingList.appendChild(div);
+        });
     };
-
     window.deleteItem = async (id) => {
-        if(confirm("Удалить запись клиента?")) {
-            await deleteDoc(doc(db, "bookings", id));
-            loadData();
-        }
+        if(confirm("Удалить?")) { await deleteDoc(doc(db, "bookings", id)); loadData(); }
     };
     loadData();
 }
