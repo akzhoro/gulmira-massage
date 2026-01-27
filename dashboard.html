@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Панель управления</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="logo">ADMIN PANEL</div>
+        <a href="#" onclick="logout()" class="btn" style="padding: 10px 20px;">Выйти</a>
+    </nav>
+    <section>
+        <h1>Здравствуйте, Гульмира!</h1>
+        <p>Это ваша рабочая область. Здесь будет статистика и управление контентом.</p>
+        <div class="grid">
+            <div class="info-block"><h3>Записей сегодня</h3><p>0</p></div>
+            <div class="info-block"><h3>Просмотров</h3><p>124</p></div>
+        </div>
+    </section>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

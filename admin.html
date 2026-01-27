@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body style="background: #f4f1ea;">
+    <div class="admin-form">
+        <h2 style="text-align:center;">Вход для мастера</h2>
+        <input type="text" id="user" placeholder="Логин">
+        <input type="password" id="pass" placeholder="Пароль">
+        <button class="btn" onclick="login()" style="color: white; width: 100%;">Войти</button>
+        <p id="msg" style="color:red; text-align:center; display:none; margin-top:10px;">Ошибка доступа</p>
+    </div>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
