@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гульмира Жанабекова | Экспертный массаж</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
+
 <nav>
     <a href="index.html" class="logo">G.ZHANABEKOVA</a>
     <ul class="nav-links">
         <li><a href="#about">Опыт</a></li>
         <li><a href="#services">Услуги</a></li>
         <li><a href="#booking">Запись</a></li>
-        <li><a href="admin.html" style="color:var(--gold)">Вход</a></li>
+        <li><a href="admin.html" style="color: var(--gold)">Вход</a></li>
     </ul>
-    <div class="burger"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div>
+    <div class="burger">
+        <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+    </div>
 </nav>
 
 <header class="hero">
@@ -27,20 +30,55 @@
     </div>
 </header>
 
+<section id="about">
+    <h2>Опыт и Квалификация</h2>
+    <div class="grid">
+        <div class="info-block">
+            <h3>Образование</h3>
+            <p>Дипломированный фельдшер (2004 г.). Сертифицированный специалист по детскому, миофасциальному и скульптурному массажу лица.</p>
+        </div>
+        <div class="info-block">
+            <h3>Медицинская база</h3>
+            <p>6 лет работы на скорой помощи (ГССМП). Глубокие знания анатомии и навыки оказания экстренной доврачебной помощи.</p>
+        </div>
+    </div>
+</section>
+
+<section id="services">
+    <h2>Услуги и методики</h2>
+    <ul class="services-list">
+        <li><strong>Массаж Пяти Континентов</strong><br>Эксклюзивный метод (2025)</li>
+        <li><strong>Лечебный и Спортивный</strong><br>Глубокая проработка мышц</li>
+        <li><strong>Скульптурный массаж лица</strong><br>Лифтинг и омоложение</li>
+        <li><strong>Детский массаж</strong><br>Включая работу с детьми ОВЗ</li>
+    </ul>
+</section>
+
 <section id="booking">
-    <h2>Онлайн-запись</h2>
+    <h2>Записаться на прием</h2>
     <div class="admin-form" style="margin: 0 auto; max-width: 450px;">
         <form id="bookingForm">
             <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="Телефон" required>
+            <input type="tel" name="phone" placeholder="Ваш телефон" required>
             <input type="date" name="date" required>
-            <select name="service" style="width:100%; padding:12px; margin:10px 0;">
+            <select name="service" style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd;">
                 <option value="Массаж 5 Континентов">Массаж 5 Континентов</option>
                 <option value="Лечебный массаж">Лечебный массаж</option>
+                <option value="Скульптурный массаж лица">Скульптурный массаж лица</option>
             </select>
-            <button type="submit" class="btn" style="width:100%; color:white;">Записаться</button>
+            <button type="submit" class="btn" style="width: 100%; color: white;">Отправить заявку</button>
         </form>
-        <p id="bookingMsg" style="display:none; color:green; margin-top:10px;">Заявка отправлена!</p>
+        <p id="bookingMsg" style="display:none; color: green; margin-top: 10px; font-weight: bold;">Заявка принята! Мы вам перезвоним.</p>
+    </div>
+</section>
+
+<section id="contact" class="contact">
+    <h2>Контакты</h2>
+    <p>Жду вас по адресу:</p>
+    <p><strong>г. Астана, ул. Мухамедханова 8, ЖК "SARDAR"</strong></p>
+    <p>Телефон: <a href="tel:+77016092225">+7 701 609 22 25</a></p>
+    <div style="margin-top: 20px;">
+        <a href="https://wa.me/77016092225" class="btn" style="background: #25D366; border: none;">Написать в WhatsApp</a>
     </div>
 </section>
 
