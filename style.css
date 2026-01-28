@@ -1,28 +1,110 @@
 :root {
     --gold: #c5a059;
     --dark: #2c2c2c;
-    --light-bg: #f7f3ed; /* Мягкий бежевый фон */
-    --text: #4a4a4a;
+    --light-bg: #f9f7f2; /* Тот самый мягкий бежевый фон */
+    --text: #444444;
     --white: #ffffff;
 }
 
+* { box-sizing: border-box; scroll-behavior: smooth; }
+
 body {
+    margin: 0; padding: 0;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--light-bg);
     color: var(--text);
+    line-height: 1.6;
+    padding-top: 70px;
 }
 
-/* Красивые карточки услуг */
-.services-list li {
-    background: var(--white);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--dark); text-align: center; }
+
+/* Навигация */
+nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 5%; background: var(--white);
+    position: fixed; width: 100%; top: 0; z-index: 1000;
+    height: 70px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* Форма записи теперь тоже на мягком фоне */
-.admin-form {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+.logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.4rem; color: var(--gold); text-decoration: none; }
+
+.nav-links { display: flex; list-style: none; padding: 0; }
+.nav-links li { margin-left: 30px; }
+.nav-links a { text-decoration: none; color: var(--dark); font-weight: 400; font-size: 0.9rem; transition: 0.3s; }
+.nav-links a:hover { color: var(--gold); }
+
+/* Hero Секция */
+.hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544161515-436cefb657f8?q=80&w=2070') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center; color: var(--white); text-align: center;
 }
+
+.hero-text h1 { color: var(--white); font-size: 3rem; margin-bottom: 10px; }
+.hero-text p { font-size: 1.2rem; margin-bottom: 30px; font-weight: 300; }
+
+/* Кнопки */
+.btn {
+    display: inline-block; padding: 15px 35px; background: var(--gold); color: var(--white);
+    text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2px; transition: 0.4s; border: 1px solid var(--gold); cursor: pointer;
+}
+.btn:hover { background: transparent; color: var(--gold); }
+
+/* Секции */
+section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+/* Карточки (Опыт и Отзывы) */
+.info-block { 
+    background: var(--white); 
+    padding: 40px; 
+    border-left: 3px solid var(--gold); 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+    text-align: left; 
+}
+
+/* Услуги */
+.services-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.services-list li { 
+    background: var(--white); 
+    padding: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+    transition: 0.3s; 
+    text-align: center;
+}
+.services-list li:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(197, 160, 89, 0.1); }
+.services-list strong { display: block; font-size: 1.1rem; color: var(--gold); margin-bottom: 5px; }
+
+/* Формы */
+.admin-form { 
+    max-width: 500px; margin: 0 auto; padding: 40px; 
+    background: var(--white); border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+}
+.admin-form input, .admin-form select {
+    width: 100%; padding: 15px; margin-bottom: 15px;
+    border: 1px solid #eee; background: #fafafa; border-radius: 5px;
+}
+
+/* Бургер-меню */
+.burger { display: none; cursor: pointer; }
+.burger div { width: 25px; height: 3px; background-color: var(--dark); margin: 5px; transition: 0.3s; }
+
+/* Адаптивность */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        position: fixed; right: 0; height: 92vh; top: 70px;
+        background: var(--white); display: flex; flex-direction: column;
+        align-items: center; width: 100%; transform: translateX(100%); transition: 0.5s;
+    }
+    .nav-links li { margin: 20px 0; }
+    .burger { display: block; }
+}
+
+.nav-active { transform: translateX(0%); }
+.toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+.toggle .line2 { opacity: 0; }
+.toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
