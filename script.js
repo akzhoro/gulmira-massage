@@ -13,10 +13,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- МОБИЛЬНОЕ МЕНЮ (БУРГЕР) ---
+// --- ИСПРАВЛЕННОЕ МОБИЛЬНОЕ МЕНЮ ---
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav-links');
-const navItems = document.querySelectorAll('.nav-links li');
 
 if (burger) {
     burger.addEventListener('click', () => {
@@ -25,24 +24,45 @@ if (burger) {
     });
 }
 
-// Закрытие меню при клике на ссылку
-navItems.forEach(link => {
+// Закрытие меню при переходе по ссылке
+document.querySelectorAll('.nav-links a').forEach(link => {
     link.addEventListener('click', () => {
         nav.classList.remove('nav-active');
         burger.classList.remove('toggle');
     });
 });
 
-// --- АВТОРИЗАЦИЯ ---
+// --- FIREBASE: ЗАПИСЬ ---
+const bookingForm = document.getElementById('bookingForm');
+if (bookingForm) {
+    bookingForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = bookingForm.querySelector('button');
+        btn.disabled = true; btn.innerText = "Отправка...";
+        
+        try {
+            await addDoc(collection(db, "bookings"), {
+                name: bookingForm.name.value,
+                phone: bookingForm.phone.value,
+                date: bookingForm.date.value,
+                service: bookingForm.service.value,
+                createdAt: new Date()
+            });
+            document.getElementById('bookingMsg').style.display = 'block';
+            bookingForm.reset();
+        } catch (err) { alert("Ошибка! Проверь Rules в Firebase."); }
+        finally { btn.disabled = false; btn.innerText = "Отправить данные"; }
+    });
+}
+
+// --- АДМИНКА (ВХОД И СПИСОК) ---
 window.login = () => {
     const u = document.getElementById('user').value;
     const p = document.getElementById('pass').value;
     if(u === "Gulmira" && p === "Aru-Ana-2020") {
         localStorage.setItem('auth', 'true');
         window.location.href = "dashboard.html";
-    } else {
-        document.getElementById('msg').style.display = 'block';
-    }
+    } else { document.getElementById('msg').style.display = 'block'; }
 };
 
 window.logout = () => {
@@ -50,61 +70,27 @@ window.logout = () => {
     window.location.href = "index.html";
 };
 
-// --- ОТПРАВКА ФОРМЫ ---
-const bookingForm = document.getElementById('bookingForm');
-if (bookingForm) {
-    bookingForm.onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = bookingForm.querySelector('button');
-        btn.disabled = true; btn.innerText = "Отправка...";
-        try {
-            const formData = new FormData(bookingForm);
-            await addDoc(collection(db, "bookings"), {
-                name: formData.get('name'),
-                phone: formData.get('phone'),
-                date: formData.get('date'),
-                service: formData.get('service'),
-                createdAt: new Date()
-            });
-            document.getElementById('bookingMsg').style.display = 'block';
-            bookingForm.reset();
-        } catch (error) {
-            alert("Ошибка базы данных!");
-        } finally {
-            btn.disabled = false; btn.innerText = "Отправить данные";
-        }
-    };
-}
-
-// --- СПИСОК ЗАПИСЕЙ (АДМИНКА) ---
 const bookingList = document.getElementById('bookingList');
 if (bookingList) {
-    const loadData = async () => {
+    const loadBookings = async () => {
         const q = query(collection(db, "bookings"), orderBy("createdAt", "desc"));
         const snap = await getDocs(q);
         bookingList.innerHTML = '';
-        snap.forEach((item) => {
+        snap.forEach(item => {
             const data = item.data();
             const div = document.createElement('div');
             div.className = 'info-block';
-            div.style.marginBottom = '20px';
+            div.style.textAlign = 'left';
             div.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="text-align:left;">
-                        <strong>👤 ${data.name}</strong><br>
-                        📞 <a href="tel:${data.phone}">${data.phone}</a><br>
-                        📅 ${data.date} | 💆 ${data.service}
-                    </div>
-                    <button onclick="deleteItem('${item.id}')" style="background:#ff4d4d; color:white; border:none; padding:10px; cursor:pointer; border-radius:8px;">Удалить</button>
-                </div>`;
+                <strong>👤 ${data.name}</strong> — <a href="tel:${data.phone}">${data.phone}</a><br>
+                📅 ${data.date} | 💆 ${data.service}
+                <button onclick="deleteRow('${item.id}')" style="float:right; background:red; color:white; border:none; padding:5px 10px; cursor:pointer;">Удалить</button>
+            `;
             bookingList.appendChild(div);
         });
     };
-    window.deleteItem = async (id) => {
-        if(confirm("Удалить запись?")) {
-            await deleteDoc(doc(db, "bookings", id));
-            loadData();
-        }
+    window.deleteRow = async (id) => {
+        if(confirm("Удалить?")) { await deleteDoc(doc(db, "bookings", id)); loadBookings(); }
     };
-    loadData();
+    loadBookings();
 }
