@@ -13,26 +13,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- МЕНЮ БУРГЕР ---
+// --- МОБИЛЬНОЕ МЕНЮ (БУРГЕР) ---
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav-links');
-const navLinks = document.querySelectorAll('.nav-links li a');
+const navItems = document.querySelectorAll('.nav-links li');
 
 if (burger) {
-    burger.onclick = () => {
+    burger.addEventListener('click', () => {
         nav.classList.toggle('nav-active');
         burger.classList.toggle('toggle');
-    };
+    });
 }
 
-// Закрытие меню при клике на ссылку (чтобы перекинуло на нужный блок)
-navLinks.forEach(link => {
-    link.onclick = () => {
-        if (nav.classList.contains('nav-active')) {
-            nav.classList.remove('nav-active');
-            burger.classList.remove('toggle');
-        }
-    };
+// Закрытие меню при клике на ссылку
+navItems.forEach(link => {
+    link.addEventListener('click', () => {
+        nav.classList.remove('nav-active');
+        burger.classList.remove('toggle');
+    });
 });
 
 // --- АВТОРИЗАЦИЯ ---
@@ -52,7 +50,7 @@ window.logout = () => {
     window.location.href = "index.html";
 };
 
-// --- ОНЛАЙН ЗАПИСЬ ---
+// --- ОТПРАВКА ФОРМЫ ---
 const bookingForm = document.getElementById('bookingForm');
 if (bookingForm) {
     bookingForm.onsubmit = async (e) => {
@@ -71,14 +69,14 @@ if (bookingForm) {
             document.getElementById('bookingMsg').style.display = 'block';
             bookingForm.reset();
         } catch (error) {
-            alert("Ошибка! Проверьте вкладку Rules в Firebase.");
+            alert("Ошибка базы данных!");
         } finally {
-            btn.disabled = false; btn.innerText = "Отправить заявку";
+            btn.disabled = false; btn.innerText = "Отправить данные";
         }
     };
 }
 
-// --- АДМИНКА ---
+// --- СПИСОК ЗАПИСЕЙ (АДМИНКА) ---
 const bookingList = document.getElementById('bookingList');
 if (bookingList) {
     const loadData = async () => {
@@ -89,20 +87,24 @@ if (bookingList) {
             const data = item.data();
             const div = document.createElement('div');
             div.className = 'info-block';
-            div.style.marginBottom = '15px';
+            div.style.marginBottom = '20px';
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <strong>👤 ${data.name}</strong> — <a href="tel:${data.phone}">${data.phone}</a><br>
+                    <div style="text-align:left;">
+                        <strong>👤 ${data.name}</strong><br>
+                        📞 <a href="tel:${data.phone}">${data.phone}</a><br>
                         📅 ${data.date} | 💆 ${data.service}
                     </div>
-                    <button onclick="deleteItem('${item.id}')" style="background:#ff4d4d; color:white; border:none; padding:8px; cursor:pointer; border-radius:5px;">Удалить</button>
+                    <button onclick="deleteItem('${item.id}')" style="background:#ff4d4d; color:white; border:none; padding:10px; cursor:pointer; border-radius:8px;">Удалить</button>
                 </div>`;
             bookingList.appendChild(div);
         });
     };
     window.deleteItem = async (id) => {
-        if(confirm("Удалить запись?")) { await deleteDoc(doc(db, "bookings", id)); loadData(); }
+        if(confirm("Удалить запись?")) {
+            await deleteDoc(doc(db, "bookings", id));
+            loadData();
+        }
     };
     loadData();
 }
