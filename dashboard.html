@@ -2,18 +2,20 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>База клиентов</title>
+    <title>Панель управления</title>
     <link rel="stylesheet" href="style.css">
-    <script>if(localStorage.getItem('auth') !== 'true') window.location.href='admin.html';</script>
+    <script>
+        if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';
+    </script>
 </head>
 <body>
     <nav>
-        <div class="logo">ЗАПИСИ</div>
-        <button onclick="logout()" class="btn" style="padding:10px;">Выйти</button>
+        <div class="logo">ЗАПИСИ КЛИЕНТОВ</div>
+        <button onclick="logout()" class="btn" style="padding:10px 20px; font-size:0.8rem;">Выйти</button>
     </nav>
     <section>
-        <h1>Новые записи</h1>
-        <div id="bookingList"></div>
+        <div id="bookingList">
+            </div>
     </section>
     <script type="module" src="script.js"></script>
 </body>
