@@ -16,6 +16,8 @@ const db = getFirestore(app);
 // --- МЕНЮ БУРГЕР ---
 const burger = document.querySelector('.burger');
 const nav = document.querySelector('.nav-links');
+const navLinks = document.querySelectorAll('.nav-links li a');
+
 if (burger) {
     burger.onclick = () => {
         nav.classList.toggle('nav-active');
@@ -23,7 +25,17 @@ if (burger) {
     };
 }
 
-// --- АВТОРИЗАЦИЯ (Экспортируем в window для доступа из HTML) ---
+// Закрытие меню при клике на ссылку (чтобы перекинуло на нужный блок)
+navLinks.forEach(link => {
+    link.onclick = () => {
+        if (nav.classList.contains('nav-active')) {
+            nav.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+        }
+    };
+});
+
+// --- АВТОРИЗАЦИЯ ---
 window.login = () => {
     const u = document.getElementById('user').value;
     const p = document.getElementById('pass').value;
@@ -47,7 +59,6 @@ if (bookingForm) {
         e.preventDefault();
         const btn = bookingForm.querySelector('button');
         btn.disabled = true; btn.innerText = "Отправка...";
-
         try {
             const formData = new FormData(bookingForm);
             await addDoc(collection(db, "bookings"), {
@@ -60,9 +71,9 @@ if (bookingForm) {
             document.getElementById('bookingMsg').style.display = 'block';
             bookingForm.reset();
         } catch (error) {
-            alert("Ошибка! Проверь Rules в Firebase");
+            alert("Ошибка! Проверьте вкладку Rules в Firebase.");
         } finally {
-            btn.disabled = false; btn.innerText = "Записаться";
+            btn.disabled = false; btn.innerText = "Отправить заявку";
         }
     };
 }
@@ -91,7 +102,7 @@ if (bookingList) {
         });
     };
     window.deleteItem = async (id) => {
-        if(confirm("Удалить?")) { await deleteDoc(doc(db, "bookings", id)); loadData(); }
+        if(confirm("Удалить запись?")) { await deleteDoc(doc(db, "bookings", id)); loadData(); }
     };
     loadData();
 }
