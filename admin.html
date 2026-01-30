@@ -5,15 +5,14 @@
     <title>Вход в систему</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="display:flex; align-items:center; justify-content:center; height:100vh;">
+<body style="display:flex; align-items:center; justify-content:center; height:100vh; background:#fdfaf5;">
     <div class="admin-form">
         <h2 style="margin-bottom:30px;">Авторизация</h2>
         <input type="text" id="user" placeholder="Логин">
         <input type="password" id="pass" placeholder="Пароль">
         <button class="btn" onclick="login()" style="width:100%;">Войти</button>
-        <p id="msg" style="color:red; display:none; margin-top:20px; text-align:center;">Неверный логин или пароль</p>
-        <br>
-        <center><a href="index.html" style="color:var(--gold); font-size:0.9rem;">Вернуться на сайт</a></center>
+        <p id="msg" style="color:red; display:none; margin-top:20px; text-align:center;">Неверные данные</p>
+        <center><br><a href="index.html" style="color:#b38e4d; font-size:0.9rem;">На главную</a></center>
     </div>
     <script type="module" src="script.js"></script>
 </body>
