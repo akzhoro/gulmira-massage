@@ -2,20 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Панель управления</title>
+    <title>Панель управления Aru-Ana</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-        if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';
-    </script>
+    <script>if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';</script>
 </head>
-<body>
+<body style="padding-top: 100px;">
     <nav>
-        <div class="logo">ЗАПИСИ КЛИЕНТОВ</div>
+        <div class="logo">ARU-ANA ADMIN</div>
         <button onclick="logout()" class="btn" style="padding:10px 20px; font-size:0.8rem;">Выйти</button>
     </nav>
     <section>
-        <div id="bookingList">
-            </div>
+        <h2 style="margin-bottom:30px;">Записи на массаж</h2>
+        <div id="bookingList" style="max-width: 800px; margin: 0 auto;"></div>
     </section>
     <script type="module" src="script.js"></script>
 </body>
