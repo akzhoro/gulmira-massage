@@ -74,6 +74,7 @@ h2 { font-size: 2.5rem; margin-bottom: 50px; }
     display: inline-block; padding: 18px 40px; background: var(--gold); color: white;
     text-decoration: none; font-weight: 700; border-radius: 50px; border: none; cursor: pointer; transition: 0.3s;
 }
+.btn:hover { background: #9d7a41; transform: translateY(-2px); }
 
 /* МОБИЛЬНОЕ МЕНЮ БУРГЕР */
 .burger { display: none; cursor: pointer; z-index: 2001; }
@@ -84,11 +85,112 @@ h2 { font-size: 2.5rem; margin-bottom: 50px; }
         position: fixed; right: 0; top: 0; height: 100vh; width: 80%;
         background: var(--white); flex-direction: column; justify-content: center;
         transform: translateX(100%); transition: 0.5s ease;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
     }
+    .nav-links li { margin: 15px 0; }
     .nav-links.nav-active { transform: translateX(0); }
     .burger { display: block; }
     
     .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
     .toggle .line2 { opacity: 0; }
     .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+    
+    .hero h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    section { padding: 60px 5%; }
+    .grid { grid-template-columns: 1fr; }
+}
+
+/* Стили для админ-панели */
+#monthFilter, #serviceFilter {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    background: white;
+    border: 2px solid #e0e0e0;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#monthFilter:focus, #serviceFilter:focus {
+    border-color: var(--gold);
+    outline: none;
+}
+
+#totalCounter {
+    font-size: 1.2rem;
+    color: var(--dark);
+    border-left: 4px solid var(--gold);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Стили для карточек записей в админке */
+#bookingList .info-block {
+    text-align: left;
+    position: relative;
+    padding-right: 120px;
+    margin-bottom: 20px;
+}
+
+#bookingList .info-block button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+#bookingList .info-block button:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+/* Адаптивность для фильтров */
+@media screen and (max-width: 768px) {
+    #monthFilter, #serviceFilter {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+
+/* Стили для отзывов */
+#reviews .info-block p {
+    font-style: italic;
+    line-height: 1.8;
+}
+
+#reviews .info-block strong {
+    color: var(--gold);
+    display: block;
+    margin-top: 15px;
+}
+
+/* Стили для контактов */
+#contact a {
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+#contact a:hover {
+    opacity: 0.8;
+}
+
+/* Стили для сообщений */
+#bookingMsg {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--gold);
+}
+
+#msg {
+    background: #ffe6e6;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ffcccc;
 }
