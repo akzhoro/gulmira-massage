@@ -3,80 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aru-Ana | Массажный центр Гульмиры Жанабековой</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <title>Гульмира Жанабекова | Эксперт Массажа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav>
-    <a href="index.html" class="logo">ARU-ANA</a>
+    <a href="index.html" class="logo">G.ZHANABEKOVA</a>
     <ul class="nav-links">
-        <li><a href="#about">О мастере</a></li>
+        <li><a href="#about">Опыт мастера</a></li>
         <li><a href="#services">Услуги</a></li>
         <li><a href="#reviews">Отзывы</a></li>
-        <li><a href="#booking" class="nav-booking-btn">Записаться</a></li>
+        <li><a href="#contact">Контакты</a></li>
+        <li><a href="#booking" class="nav-booking-btn">Запись</a></li>
     </ul>
+    <div class="burger">
+        <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+    </div>
 </nav>
 
-<header class="hero">
-    <div class="hero-content">
-        <h1>Гульмира Жанабекова</h1>
-        <p>Медицинское образование, 20 лет практики и авторские методики восстановления вашего здоровья.</p>
-        <a href="#services" class="btn-main" style="text-decoration:none; padding: 15px 40px;">Посмотреть услуги</a>
+<header class="hero" style="height: 90vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=2070') center/cover; display: flex; align-items: center; justify-content: center; color: white;">
+    <div style="text-align: center;">
+        <h1 style="color: white; font-size: 4rem; margin-bottom: 20px;">Гульмира Жанабекова</h1>
+        <p style="font-size: 1.6rem; letter-spacing: 4px; font-weight: 300;">ПРОФЕССИОНАЛЬНЫЙ МЕДИЦИНСКИЙ МАССАЖ</p>
     </div>
 </header>
 
-<section id="about" style="padding: 100px 8%; text-align: center;">
-    <h2>Опыт и профессионализм</h2>
-    <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #555;">
-        Я начинала свой путь в медицине, работая на скорой помощи. Этот опыт научил меня чувствовать тело пациента на глубоком уровне. Сегодня в центре "Aru-Ana" мы объединяем классические лечебные техники с современными аппаратными методиками.
-    </p>
+<section id="about">
+    <h2>Опыт мастера</h2>
+    <div class="grid">
+        <div class="info-block">
+            <h3>20 лет практики</h3>
+            <p>Дипломированный фельдшер. Более 6 лет опыта в экстренной медицине (скорая помощь ГССМП). Этот опыт позволяет проводить массаж с глубоким пониманием анатомии и физиологии каждого пациента.</p>
+        </div>
+        <div class="info-block">
+            <h3>Квалификация</h3>
+            <p>Сочетание классической медицинской школы и передовых мировых техник. Я помогаю не просто расслабиться, а решить конкретные проблемы со здоровьем и самочувствием.</p>
+        </div>
+    </div>
 </section>
 
 <section id="services">
-    <h2>Наши услуги</h2>
-    <div id="servicesGrid" class="grid">
-        </div>
-</section>
-
-<section id="booking" class="section-form">
-    <h2>Запись на прием</h2>
-    <div class="form-container">
-        <form id="bookingForm">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>
-            <input type="date" name="date" required>
-            <select name="service" id="serviceSelect" required></select>
-            
-            <div id="priceDisplay" style="display:none; text-align: center; margin-bottom: 20px;">
-                <span style="color: #888;">Стоимость:</span> 
-                <strong id="currentPrice" style="color: var(--gold); font-size: 1.5rem;"></strong> <b>тг</b>
-            </div>
-
-            <textarea name="comment" placeholder="Ваши пожелания или жалобы" rows="4"></textarea>
-            <button type="submit" class="btn-main">Забронировать</button>
-        </form>
-        <p id="bookingMsg" style="display:none; text-align:center; color: var(--gold); margin-top:20px;">✅ Ваша заявка принята! Мы скоро свяжемся с вами.</p>
+    <h2>Услуги</h2>
+    <div class="grid">
+        <div class="info-block"><strong>Массаж 5 Континентов</strong><p>Элитная процедура для полной перезагрузки организма.</p></div>
+        <div class="info-block"><strong>Скульптурный массаж лица</strong><p>Ручная пластика и лифтинг-эффект без инъекций.</p></div>
+        <div class="info-block"><strong>Лечебный массаж</strong><p>Устранение болей в спине, шее и пояснице.</p></div>
+        <div class="info-block"><strong>Детский массаж (0+)</strong><p>Профилактика и реабилитация детей любого возраста.</p></div>
     </div>
 </section>
 
 <section id="reviews">
     <h2>Отзывы клиентов</h2>
-    <div id="reviewsList"></div>
-    <div class="form-container" style="margin-top: 50px;">
-        <h3>Оставить отзыв</h3><br>
-        <form id="reviewForm">
-            <input type="text" name="revName" placeholder="Ваше имя" required>
-            <textarea name="revText" placeholder="Ваш отзыв" required></textarea>
-            <button type="submit" class="btn-main">Отправить</button>
-        </form>
+    <div class="grid">
+        <div class="info-block"><p>«Золотые руки! Спина как новая. Доверяю на все 100%.»<br><strong>— Алия</strong></p></div>
+        <div class="info-block"><p>«Массаж 5 континентов — это лучшее, что случалось со мной. Рахмет!»<br><strong>— Сауле</strong></p></div>
+        <div class="info-block"><p>«Вожу сына к Гульмире. Она очень чуткая, результаты видим сразу.»<br><strong>— Бауржан</strong></p></div>
     </div>
 </section>
 
-<footer style="padding: 50px 8%; background: var(--dark); color: white; text-align: center;">
-    <p>© 2024 Центр массажа "Aru-Ana". г. Астана, ул. Мухамедханова 8.</p>
-    <a href="admin.html" style="color: #444; text-decoration: none; font-size: 0.8rem; margin-top: 20px; display: block;">Для мастера</a>
+<section id="booking">
+    <h2>Записаться на сеанс</h2>
+    <div class="admin-form">
+        <form id="bookingForm">
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            <input type="tel" name="phone" placeholder="Ваш телефон" required>
+            <input type="date" name="date" required>
+            <select name="service">
+                <option value="Массаж 5 Континентов">Массаж 5 Континентов</option>
+                <option value="Скульптурный лица">Скульптурный лица</option>
+                <option value="Лечебный массаж">Лечебный массаж</option>
+            </select>
+            <button type="submit" class="btn" style="width: 100%;">Отправить данные</button>
+        </form>
+        <p id="bookingMsg" style="display:none; text-align: center; color: var(--gold); margin-top: 25px;">Заявка отправлена!</p>
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Контакты</h2>
+    <div style="text-align: center;">
+        <p>г. Астана, ул. Мухамедханова 8, ЖК "SARDAR"</p>
+        <p>Тел: <a href="tel:+77016092225">+7 701 609 22 25</a></p>
+        <br>
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <a href="https://www.instagram.com/gulmira_aktailakovna84?igsh=a2tsN3Q4dWJwdzFy" target="_blank" style="color: #E1306C; font-weight: 700;">INSTAGRAM</a>
+            <a href="https://wa.me/77016092225" target="_blank" style="color: #25D366; font-weight: 700;">WHATSAPP</a>
+        </div>
+    </div>
+</section>
+
+<footer style="background: #1a1a1a; padding: 40px 20px; text-align: center;">
+    <a href="admin.html" style="color: #555; text-decoration: none; font-size: 0.9rem; border: 1px solid #333; padding: 8px 15px; border-radius: 5px;">Вход для персонала</a>
 </footer>
 
 <script type="module" src="script.js"></script>
