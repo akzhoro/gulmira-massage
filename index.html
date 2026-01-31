@@ -3,108 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aru-Ana | Профессиональный массаж Гульмиры Жанабековой</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <meta name="description" content="Центр профессионального массажа Гульмиры Жанабековой в Астане. Более 20 лет опыта, авторские методики оздоровления и реабилитации.">
+    <title>Aru-Ana | Центр массажа Гульмиры Жанабековой</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Внутренние стили для усиления визуальных эффектов */
+        .hero { 
+            height: 100vh; 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('https://images.unsplash.com/photo-1544161515-4ae6ce6ea858?auto=format&fit=crop&q=80') 
+                        center/cover no-repeat fixed; 
+            display: flex; align-items: center; justify-content: center;
+        }
+        .service-card {
+            background: #fff; padding: 40px; border-radius: 25px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; position: relative; overflow: hidden;
+            border: 1px solid rgba(179, 142, 77, 0.1);
+        }
+        .service-card:hover { transform: translateY(-15px); box-shadow: 0 25px 60px rgba(179, 142, 77, 0.15); }
+        .service-card h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--dark); line-height: 1.4; }
+        .service-price { font-weight: 800; color: var(--gold); font-size: 1.7rem; margin-bottom: 20px; }
+        .details-btn { 
+            background: none; border: 2px solid var(--gold); color: var(--gold);
+            padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.3s;
+            width: fit-content; margin-top: auto;
+        }
+        .details-btn:hover { background: var(--gold); color: white; }
+        .service-details { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #f0f0f0; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
-<nav>
+<nav id="navbar">
     <a href="index.html" class="logo">ARU-ANA</a>
     <ul class="nav-links">
-        <li><a href="#about">Опыт мастера</a></li>
-        <li><a href="#services">Услуги</a></li>
-        <li><a href="#reviews">Отзывы</a></li>
-        <li><a href="#booking" class="nav-booking-btn">Запись</a></li>
+        <li><a href="#about">Профессиональный опыт</a></li>
+        <li><a href="#services">Услуги и цены</a></li>
+        <li><a href="#reviews">Отзывы клиентов</a></li>
+        <li><a href="#contact">Контакты</a></li>
+        <li><a href="#booking" class="nav-booking-btn">Запись онлайн</a></li>
     </ul>
-    <div class="burger">
+    <div class="burger" id="mobile-menu">
         <div class="line1"></div><div class="line2"></div><div class="line3"></div>
     </div>
 </nav>
 
-<header class="hero" style="height: 100vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ea858?auto=format&fit=crop&q=80') center/cover no-repeat; display: flex; align-items: center; justify-content: center;">
-    <div style="text-align: center;">
-        <h1 style="color: white; font-size: clamp(3rem, 10vw, 5rem); margin-bottom: 10px; font-family: 'Playfair Display', serif;">ARU-ANA</h1>
-        <p style="color: white; font-size: 1.2rem; letter-spacing: 5px; font-weight: 300; text-transform: uppercase;">Гульмира Жанабекова</p>
+<header class="hero">
+    <div style="text-align: center; max-width: 900px; padding: 0 25px;">
+        <span style="color: var(--gold); letter-spacing: 5px; text-transform: uppercase; font-weight: 600;">Добро пожаловать в мир здоровья</span>
+        <h1 style="color: white; font-size: clamp(2.5rem, 8vw, 5rem); margin: 20px 0; font-family: 'Playfair Display', serif;">Гульмира Жанабекова</h1>
+        <p style="color: #eee; font-size: 1.4rem; font-weight: 300; line-height: 1.6;">
+            Более 20 лет практического опыта в медицине и массаже. <br>
+            Индивидуальный путь к вашему долголетию и безупречному телу.
+        </p>
+        <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center;">
+            <a href="#services" class="btn">Все услуги</a>
+            <a href="#booking" class="btn" style="background: transparent; border: 2px solid white;">Записаться</a>
+        </div>
     </div>
 </header>
 
-<section id="about" style="padding: 100px 8%;">
-    <h2>Опыт мастера</h2>
-    <div class="grid">
-        <div class="info-block">
-            <h3>20+ лет опыта</h3>
-            <p>Глубокие медицинские знания и колоссальный практический стаж. Индивидуальный подход к каждому пациенту и работа на реальный результат.</p>
-        </div>
-        <div class="info-block">
-            <h3>Профессионализм</h3>
-            <p>Дипломированный специалист. Владение сложнейшими техниками лечебного, реабилитационного и эстетического массажа.</p>
-        </div>
-        <div class="info-block">
-            <h3>Методика</h3>
-            <p>Сочетание классической школы и современных оздоровительных практик для быстрого восстановления вашего здоровья.</p>
-        </div>
-    </div>
-</section>
-
-<section id="services">
-    <h2>Наши услуги</h2>
-    <div class="grid">
-        <div class="info-block"><h3>1)Детский общий массаж (0-5 лет)</h3><p><strong>60.000 тг | 10 сеансов</strong><br>Профессиональная помощь в развитии моторики, укрепление костно-мышечного аппарата малыша.</p></div>
-        <div class="info-block"><h3>2)Детский общий массаж (5-10 лет)</h3><p><strong>80.000 тг | 10 сеансов</strong><br>Снятие тонуса, профилактика нарушений осанки и поддержка здоровья школьника.</p></div>
-        <div class="info-block"><h3>3)Детский общий массаж (10-15 лет)</h3><p><strong>100.000 тг | 10 сеансов</strong><br>Коррекция осанки и укрепление мышечного корсета в период интенсивного роста.</p></div>
-        <div class="info-block"><h3>4)Детский общий массаж (15-18 лет)</h3><p><strong>150.000 тг | 10 сеансов</strong><br>Глубокая проработка мышц спины, снятие учебного стресса и зажимов.</p></div>
-        <div class="info-block"><h3>5)Женский общий массаж</h3><p><strong>180.000 тг | 10 сеансов</strong><br>90 минут полного оздоровления: лимфодренаж, снятие отеков и глубокое расслабление.</p></div>
-        <div class="info-block"><h3>6)Мужской общий массаж</h3><p><strong>220.000 тг | 10 сеансов</strong><br>Силовая техника для проработки глубоких мышц, снятия триггеров и усталости.</p></div>
-        <div class="info-block"><h3>7)ШВЗ + Физио</h3><p><strong>10.000 тг | 1 сеанс</strong><br>Лечение шейно-воротниковой зоны: избавление от головных болей и напряжения.</p></div>
-        <div class="info-block"><h3>8)Спина + Физио</h3><p><strong>12.000 тг | 1 сеанс</strong><br>Комплексная проработка всей спины с применением физиоаппарата для усиления эффекта.</p></div>
-        <div class="info-block"><h3>9)Антицеллютный ручной</h3><p><strong>200.000 тг | 10 сеансов</strong><br>Скульптурирование фигуры, улучшение качества кожи и борьба с локальными отложениями.</p></div>
-        <div class="info-block"><h3>10)Аппаратная коррекция фигуры</h3><p><strong>220.000 тг | 10 сеансов</strong><br>Интенсивный 3-часовой сеанс: мощное воздействие для быстрого похудения и детокса.</p></div>
-        <div class="info-block"><h3>11)Аппаратный массаж лица</h3><p><strong>150.000 тг | 10 сеансов</strong><br>Стимуляция коллагена, подтяжка овала лица и сияние кожи без уколов.</p></div>
-        <div class="info-block"><h3>12)Миофасциальный массаж</h3><p><strong>200.000 тг | 10 сеансов</strong><br>Глубокая работа с соединительной тканью для восстановления гибкости и легкости движений.</p></div>
-        <div class="info-block"><h3>13)Массаж 5 Континентов</h3><p><strong>35.000 тг | 1 сеанс</strong><br>Элитная техника (120 мин), сочетающая массаж, масла и энергию для полной перезагрузки.</p></div>
-        <div class="info-block"><h3>14)Физио</h3><p><strong>8.000 тг | 1 сеанс</strong><br>Аппаратная процедура для точечного снятия воспалений и ускорения регенерации.</p></div>
-    </div>
-</section>
-
-<section id="booking" style="background: #f9f4eb;">
-    <h2>Записаться на сеанс</h2>
-    <div class="admin-form">
-        <form id="bookingForm">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" required>
-            <input type="date" name="date" id="datePicker" required>
-            <select name="service" required id="serviceSelect">
-                <option value="" disabled selected>Выберите услугу</option>
-            </select>
-            <div id="priceDisplay" style="text-align: center; margin-bottom: 20px; font-weight: bold; color: var(--gold); display: none; font-size: 1.2rem;">
-                Стоимость: <span id="currentPrice"></span> тг
+<section id="about" style="background: #fff; padding: 120px 8%;">
+    <div class="container">
+        <h2 style="margin-bottom: 20px;">Экспертный подход</h2>
+        <p style="text-align: center; color: #777; max-width: 700px; margin: 0 auto 60px;">Мой фундамент — медицинское образование и годы работы в экстренных ситуациях.</p>
+        <div class="grid">
+            <div class="info-block" style="text-align: left;">
+                <h3 style="text-align: left; color: var(--gold);">Медицинское образование</h3>
+                <p>Квалифицированный фельдшер с опытом работы на ГССМП. Глубокое знание анатомии позволяет мне воздействовать на причину болей, а не на их следствие.</p>
             </div>
-            <textarea name="comment" placeholder="Что вас беспокоит? (например: боли в пояснице)" style="width:100%; padding:15px; border-radius:10px; border:1px solid #eee; margin-bottom:20px; font-family:inherit; min-height: 80px;"></textarea>
-            <button type="submit" class="btn" style="width: 100%;">Отправить данные</button>
-        </form>
-        <p id="bookingMsg" style="display:none; text-align: center; color: var(--gold); margin-top: 25px; font-weight: bold;">Заявка отправлена! Мы скоро свяжемся с вами.</p>
+            <div class="info-block" style="text-align: left;">
+                <h3 style="text-align: left; color: var(--gold);">Многолетняя практика</h3>
+                <p>Более двух десятилетий я помогаю пациентам восстанавливаться после травм, исправлять осанку и избавляться от хронического напряжения.</p>
+            </div>
+            <div class="info-block" style="text-align: left;">
+                <h3 style="text-align: left; color: var(--gold);">Индивидуальный метод</h3>
+                <p>Каждый сеанс уникален. Я комбинирую западные медицинские стандарты с восточными техниками глубокой релаксации и детоксикации.</p>
+            </div>
+        </div>
     </div>
 </section>
 
-<section id="reviews">
+<section id="services" style="background: var(--bg);">
+    <h2>Наши услуги</h2>
+    <div class="grid" id="servicesGrid">
+        </div>
+</section>
+
+<section id="booking" style="background: #f4efdf;">
+    <div class="container">
+        <h2>Забронировать время</h2>
+        <div class="admin-form" style="max-width: 650px; box-shadow: 0 30px 60px rgba(179,142,77,0.1);">
+            <form id="bookingForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <input type="text" name="name" placeholder="Как к вам обращаться?" required>
+                    <input type="tel" name="phone" placeholder="+7 (701) 000-00-00" required>
+                </div>
+                <input type="date" name="date" id="datePicker" required>
+                <select name="service" id="serviceSelect" required></select>
+                
+                <div id="priceDisplay" style="text-align: center; margin-bottom: 25px; padding: 20px; background: #fffcf5; border-radius: 15px; display: none;">
+                    <span style="font-size: 0.9rem; color: #888;">Итоговая стоимость:</span><br>
+                    <span id="currentPrice" style="font-size: 2rem; font-weight: 800; color: var(--gold);"></span> <span style="font-size: 1.2rem; color: var(--gold);">тг</span>
+                </div>
+
+                <textarea name="comment" placeholder="Опишите ваши пожелания или жалобы (например: боли в пояснице, отечность, реабилитация)" style="width:100%; padding:20px; border-radius:12px; border:1px solid #ddd; margin-bottom:25px; height: 120px; font-family: inherit; resize: none;"></textarea>
+                <button type="submit" class="btn" style="width: 100%; font-size: 1.2rem;">Подтвердить запись</button>
+            </form>
+            <div id="bookingMsg" style="display:none; text-align: center; background: #e8f5e9; color: #2e7d32; padding: 20px; border-radius: 12px; margin-top: 25px; font-weight: 600;">
+                ✅ Ваша заявка принята! Мы свяжемся с вами для уточнения деталей.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="reviews" style="background: white;">
     <h2>Отзывы клиентов</h2>
-    <div id="reviewsList" class="grid" style="margin-bottom: 40px;"></div>
-    <div class="admin-form" style="background: #fff;">
-        <h3 style="margin-bottom:20px;">Оставить отзыв</h3>
+    <div id="reviewsList" class="grid" style="margin-bottom: 60px;">
+        </div>
+    <div class="admin-form" style="background: #fdfaf5; border: 1px dashed var(--gold);">
+        <h3 style="margin-bottom: 25px;">Поделитесь своим мнением</h3>
         <form id="reviewForm">
             <input type="text" name="revName" placeholder="Ваше имя" required>
-            <textarea name="revText" placeholder="Ваш отзыв..." required style="width:100%; padding:15px; border-radius:10px; border:1px solid #eee; margin-bottom:20px; height:100px; font-family:inherit;"></textarea>
-            <button type="submit" class="btn" style="width: 100%;">Опубликовать</button>
+            <textarea name="revText" placeholder="Расскажите о своих результатах после курса массажа..." required style="width:100%; padding:20px; border-radius:12px; border:1px solid #ddd; margin-bottom:20px; height:120px; font-family: inherit; resize: none;"></textarea>
+            <button type="submit" class="btn" style="width: 100%;">Оставить отзыв</button>
         </form>
     </div>
 </section>
 
-<footer style="background: #1a1a1a; padding: 40px 20px; text-align: center;">
-    <p style="color: #666; margin-bottom: 10px;">г. Астана, ул. Мухамедханова 8, ЖК "SARDAR"</p>
-    <a href="admin.html" style="color: #333; text-decoration: none; font-size: 0.7rem;">Вход для персонала</a>
+<section id="contact">
+    <div class="grid" style="align-items: center;">
+        <div style="text-align: left;">
+            <h2 style="text-align: left; margin-bottom: 40px;">Где мы находимся?</h2>
+            <p style="margin-bottom: 20px; font-size: 1.2rem;">📍 <strong>Адрес:</strong> г. Астана, ул. Мухамедханова 8, ЖК "SARDAR"</p>
+            <p style="margin-bottom: 40px; font-size: 1.2rem;">📞 <strong>Телефон:</strong> <a href="tel:+77016092225" style="color: var(--gold); text-decoration: none; font-weight: bold;">+7 701 609 22 25</a></p>
+            <div style="display: flex; gap: 20px;">
+                <a href="https://wa.me/77016092225" target="_blank" class="btn" style="background: #25D366; border: none; flex: 1; text-align: center;">WhatsApp</a>
+                <a href="https://www.instagram.com/gulmira_aktailakovna84" target="_blank" class="btn" style="background: #E1306C; border: none; flex: 1; text-align: center;">Instagram</a>
+            </div>
+        </div>
+        <div style="height: 450px; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+            <iframe src="http://googleusercontent.com/maps.google.com/3" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+
+<footer style="background: #111; padding: 80px 20px; text-align: center; color: #666;">
+    <div class="logo" style="margin-bottom: 30px; display: block; font-size: 2.2rem;">ARU-ANA</div>
+    <p style="max-width: 600px; margin: 0 auto 30px; line-height: 1.8;">Ваше здоровье — это инвестиция, которая окупается бодростью и красотой каждый день.</p>
+    <div style="margin-bottom: 40px;">
+        <a href="#about" style="color: #999; margin: 0 15px; text-decoration: none;">О мастере</a>
+        <a href="#services" style="color: #999; margin: 0 15px; text-decoration: none;">Услуги</a>
+        <a href="#contact" style="color: #999; margin: 0 15px; text-decoration: none;">Контакты</a>
+    </div>
+    <p style="font-size: 0.8rem;">&copy; 2024 Все права защищены. <a href="admin.html" style="color: #222; text-decoration: none;">Панель</a></p>
 </footer>
 
 <script type="module" src="script.js"></script>
+<script>
+    // Глобальная функция для управления карточками
+    function toggleDetails(btn) {
+        const details = btn.nextElementSibling;
+        const isVisible = details.style.display === 'block';
+        details.style.display = isVisible ? 'none' : 'block';
+        btn.innerText = isVisible ? 'Подробнее' : 'Скрыть описание';
+    }
+</script>
 </body>
 </html>
