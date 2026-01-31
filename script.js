@@ -1,7 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// --- КОНФИГУРАЦИЯ FIREBASE ---
+/** * КОНФИГУРАЦИЯ БАЗЫ ДАННЫХ
+ * Используем Firebase для хранения записей и отзывов в реальном времени.
+ */
 const firebaseConfig = {
     apiKey: "AIzaSyBR1RGxAbSxUhEDejPIhiHpGJMs0vXIG8U",
     authDomain: "gulmira-massage.firebaseapp.com",
@@ -14,130 +16,206 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- ПОЛНАЯ БАЗА УСЛУГ (14 ПОЗИЦИЙ) ---
-const servicesDB = [
-    { name: "Детский общий массаж (0-5 лет)", price: "60.000", info: "Курс из 10 сеансов. Направлен на укрепление иммунитета, профилактику дисплазии и гипертонуса." },
-    { name: "Детский общий массаж (5-10 лет)", price: "80.000", info: "Курс из 10 сеансов. Коррекция осанки, снятие школьного напряжения, укрепление мышц." },
-    { name: "Детский общий массаж (10-15 лет)", price: "100.000", info: "Курс из 10 сеансов. Работа со сколиозом, поддержка организма в период активного роста." },
-    { name: "Детский общий массаж (15-18 лет)", price: "150.000", info: "Курс из 10 сеансов. Полноценная проработка спины и конечностей для подростков." },
-    { name: "Женский общий массаж", price: "180.000", info: "Курс из 10 сеансов (по 90 мин). Глубокий релакс, лимфодренаж и работа с зажимами." },
-    { name: "Мужской общий массаж", price: "220.000", info: "Курс из 10 сеансов (по 90 мин). Интенсивная силовая техника для снятия триггерных точек." },
-    { name: "ШВЗ + Физио", price: "10.000", info: "Разовый сеанс. Проработка шейно-воротниковой зоны + аппаратная физиотерапия." },
-    { name: "Спина + Физио", price: "12.000", info: "Разовый сеанс. Глубокий массаж всей спины с применением лечебного оборудования." },
-    { name: "Антицеллютный ручной", price: "200.000", info: "Курс из 10 сеансов по 90 мин. Скульптурирование тела и выведение лишней жидкости." },
-    { name: "Аппаратная коррекция фигуры", price: "220.000", info: "Курс из 10 сеансов. Длительность: 180 мин. Мощный микс ручного и аппаратного массажа." },
-    { name: "Аппаратный массаж лица", price: "150.000", info: "Курс из 10 сеансов. Лифтинг-эффект, подтяжка овала и улучшение качества кожи." },
-    { name: "Миофасциальный массаж", price: "200.000", info: "Курс из 10 сеансов. Глубокая работа с фасциями для восстановления свободы движений." },
-    { name: "Массаж 5 Континентов", price: "35.000", info: "Разовый элитный ритуал (120 мин). Сочетание пяти мировых техник для полной детоксикации." },
-    { name: "Физио", price: "8.000", info: "Разовый сеанс. Профессиональное аппаратное воздействие на проблемную зону." }
+// ПОЛНЫЙ КАТАЛОГ УСЛУГ БЕЗ ЛИШНЕЙ НУМЕРАЦИИ
+const CATALOG = [
+    { id: "c1", name: "Детский общий массаж (0-5 лет)", price: 60000, duration: "40 мин", desc: "Курс 10 сеансов. Профилактика тонуса и укрепление иммунитета." },
+    { id: "c2", name: "Детский общий массаж (5-10 лет)", price: 80000, duration: "50 мин", desc: "Курс 10 сеансов. Работа с осанкой и снятие школьного напряжения." },
+    { id: "c3", name: "Детский общий массаж (10-15 лет)", price: 100000, duration: "60 мин", desc: "Курс 10 сеансов. Коррекция сколиоза и поддержка роста." },
+    { id: "c4", name: "Детский общий массаж (15-18 лет)", price: 150000, duration: "60 мин", desc: "Курс 10 сеансов. Интенсивная проработка мышечного корсета." },
+    { id: "w1", name: "Женский общий массаж", price: 180000, duration: "90 мин", desc: "Курс 10 сеансов. Лимфодренаж, релакс и снятие зажимов." },
+    { id: "m1", name: "Мужской общий массаж", price: 220000, duration: "90 мин", desc: "Курс 10 сеансов. Глубокая силовая проработка триггерных точек." },
+    { id: "sh1", name: "ШВЗ + Физио", price: 10000, duration: "40 мин", desc: "Разово. Снятие болей в шее и голове, улучшение кровотока." },
+    { id: "sp1", name: "Спина + Физио", price: 12000, duration: "50 мин", desc: "Разово. Глубокий массаж всей спины с аппаратным прогревом." },
+    { id: "ac1", name: "Антицеллютный ручной", price: 200000, duration: "90 мин", desc: "Курс 10 сеансов. Моделирование контуров и детокс." },
+    { id: "ap1", name: "Аппаратная коррекция фигуры", price: 220000, duration: "180 мин", desc: "Курс 10 сеансов. 3 часа комплексного воздействия." },
+    { id: "lf1", name: "Аппаратный массаж лица", price: 150000, duration: "60 мин", desc: "Курс 10 сеансов. Подтяжка овала и лифтинг эффект." },
+    { id: "mf1", name: "Миофасциальный массаж", price: 200000, duration: "90 мин", desc: "Курс 10 сеансов. Работа с фасциями для полной свободы тела." },
+    { id: "v5", name: "Массаж 5 Континентов", price: 35000, duration: "120 мин", desc: "Эксклюзив. Пять мировых техник в одном сеансе." },
+    { id: "ph1", name: "Физио процедура", price: 8000, duration: "30 мин", desc: "Локальное лечение воспалений аппаратным методом." }
 ];
 
-// --- 1. ГЕНЕРАЦИЯ ИНТЕРФЕЙСА УСЛУГ ---
-const grid = document.getElementById('servicesGrid');
-const select = document.getElementById('serviceSelect');
+// --- 1. ИНИЦИАЛИЗАЦИЯ ИНТЕРФЕЙСА (ГЛАВНАЯ СТРАНИЦА) ---
+function initMainPage() {
+    const grid = document.getElementById('servicesGrid');
+    const select = document.getElementById('serviceSelect');
+    if (!grid || !select) return;
 
-if (grid && select) {
-    select.innerHTML = '<option value="" disabled selected>Выберите услугу из прайса</option>';
-    
-    servicesDB.forEach(s => {
-        // Рендерим карточки на главную
-        grid.innerHTML += `
-            <div class="service-card">
-                <h3>${s.name}</h3>
-                <div class="service-price">${s.price} тг</div>
-                <button class="details-btn" onclick="toggleDetails(this)">Подробнее</button>
-                <div class="service-details">
-                    <p style="color: #666; line-height: 1.6;">${s.info}</p>
-                    <p style="margin-top: 15px; font-weight: 600;">Доступно к записи прямо сейчас.</p>
-                </div>
-            </div>`;
-        
-        // Наполняем выпадающий список в форме
-        let opt = document.createElement('option');
-        opt.value = s.name; opt.innerText = s.name;
+    // Очистка и наполнение
+    grid.innerHTML = '';
+    select.innerHTML = '<option value="" disabled selected>Выберите нужную услугу</option>';
+
+    CATALOG.forEach(item => {
+        // Создаем карточку
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.innerHTML = `
+            <div class="card-inner">
+                <h3>${item.name}</h3>
+                <div class="card-price">${item.price.toLocaleString()} тг</div>
+                <p class="card-duration">⏱ ${item.duration}</p>
+                <div class="card-desc">${item.desc}</div>
+                <a href="#booking" class="card-btn" onclick="preSelectService('${item.name}')">Выбрать</a>
+            </div>
+        `;
+        grid.appendChild(card);
+
+        // Добавляем в Select
+        const opt = document.createElement('option');
+        opt.value = item.name;
+        opt.textContent = item.name;
         select.appendChild(opt);
     });
+}
 
-    // Обработка выбора услуги (показ цены)
-    select.addEventListener('change', () => {
-        const found = servicesDB.find(item => item.name === select.value);
-        if (found) {
-            document.getElementById('currentPrice').innerText = found.price;
-            document.getElementById('priceDisplay').style.display = 'block';
-        }
+// Предвыбор услуги при нажатии на карточку
+window.preSelectService = (name) => {
+    const select = document.getElementById('serviceSelect');
+    if (select) {
+        select.value = name;
+        updatePriceDisplay(name);
+    }
+};
+
+function updatePriceDisplay(serviceName) {
+    const priceBox = document.getElementById('priceDisplay');
+    const priceVal = document.getElementById('currentPrice');
+    const service = CATALOG.find(s => s.name === serviceName);
+    if (service && priceBox && priceVal) {
+        priceVal.textContent = service.price.toLocaleString();
+        priceBox.classList.add('active');
+    }
+}
+
+// --- 2. ОБРАБОТКА ФОРМЫ ЗАПИСИ ---
+async function handleBooking(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button');
+    const msg = document.getElementById('bookingMsg');
+
+    const data = {
+        name: form.name.value,
+        phone: form.phone.value,
+        date: form.date.value,
+        service: form.service.value,
+        comment: form.comment.value || "Нет комментария",
+        createdAt: new Date()
+    };
+
+    btn.disabled = true;
+    btn.textContent = "Отправка...";
+
+    try {
+        await addDoc(collection(db, "bookings"), data);
+        msg.style.display = 'block';
+        form.reset();
+        document.getElementById('priceDisplay').classList.remove('active');
+        setTimeout(() => msg.style.display = 'none', 5000);
+    } catch (err) {
+        alert("Ошибка при записи. Проверьте интернет.");
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Записаться";
+    }
+}
+
+// --- 3. СИСТЕМА ОТЗЫВОВ ---
+async function loadReviews() {
+    const container = document.getElementById('reviewsList');
+    if (!container) return;
+
+    const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    container.innerHTML = '';
+
+    snap.forEach(doc => {
+        const r = doc.data();
+        container.innerHTML += `
+            <div class="review-item">
+                <p class="rev-text">"${r.text}"</p>
+                <div class="rev-meta">
+                    <strong>${r.name}</strong>
+                    <span>${new Date(r.createdAt.seconds * 1000).toLocaleDateString()}</span>
+                </div>
+            </div>
+        `;
     });
 }
 
-// --- 2. ЛОГИКА ОНЛАЙН-ЗАПИСИ ---
-const bForm = document.getElementById('bookingForm');
-if (bForm) {
-    // Ограничиваем выбор даты (нельзя выбрать прошлое)
-    const dt = document.getElementById('datePicker');
-    if (dt) dt.min = new Date().toISOString().split("T")[0];
+async function handleReview(e) {
+    e.preventDefault();
+    const form = e.target;
+    await addDoc(collection(db, "reviews"), {
+        name: form.revName.value,
+        text: form.revText.value,
+        createdAt: new Date()
+    });
+    form.reset();
+    loadReviews();
+}
 
-    bForm.onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = bForm.querySelector('button');
-        btn.disabled = true; btn.innerText = "Обработка...";
+// --- 4. АДМИН-ПАНЕЛЬ (dashboard.html) ---
+async function initAdmin() {
+    const list = document.getElementById('bookingList');
+    if (!list) return;
 
-        try {
-            await addDoc(collection(db, "bookings"), {
-                name: bForm.name.value,
-                phone: bForm.phone.value,
-                date: bForm.date.value,
-                service: bForm.service.value,
-                comment: bForm.comment.value || "",
-                createdAt: new Date()
-            });
-            document.getElementById('bookingMsg').style.display = 'block';
-            bForm.reset();
-            document.getElementById('priceDisplay').style.display = 'none';
-        } catch (err) {
-            alert("Произошла ошибка при отправке. Пожалуйста, проверьте соединение.");
-        } finally {
-            btn.disabled = false; btn.innerText = "Подтвердить запись";
+    const fService = document.getElementById('filterService');
+    const fMonth = document.getElementById('filterMonth');
+
+    // Заполнение фильтра
+    CATALOG.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s.name; o.textContent = s.name;
+        fService.appendChild(o);
+    });
+
+    const refresh = async () => {
+        const snap = await getDocs(query(collection(db, "bookings"), orderBy("createdAt", "desc")));
+        list.innerHTML = '';
+
+        snap.forEach(item => {
+            const d = item.data();
+            const m = d.date.split('-')[1];
+
+            if (fService.value && d.service !== fService.value) return;
+            if (fMonth.value && m !== fMonth.value) return;
+
+            const wa = `https://wa.me/${d.phone.replace(/\D/g, '')}?text=Здравствуйте, ${d.name}! Подтверждаю запись на ${d.service}`;
+
+            list.innerHTML += `
+                <div class="admin-card">
+                    <div class="admin-header">
+                        <strong>${d.name}</strong>
+                        <span class="status">Новая запись</span>
+                    </div>
+                    <p>📱 ${d.phone} | 📅 ${d.date}</p>
+                    <p>💆 ${d.service}</p>
+                    <p class="admin-comm">${d.comment}</p>
+                    <div class="admin-actions">
+                        <a href="${wa}" target="_blank" class="wa-btn">Написать в WhatsApp</a>
+                        <button onclick="deleteEntry('${item.id}')" class="del-btn">Удалить</button>
+                    </div>
+                </div>
+            `;
+        });
+    };
+
+    fService.onchange = refresh;
+    fMonth.onchange = refresh;
+    window.deleteEntry = async (id) => {
+        if(confirm("Удалить запись?")) {
+            await deleteDoc(doc(db, "bookings", id));
+            refresh();
         }
     };
+    refresh();
 }
 
-// --- 3. УПРАВЛЕНИЕ ОТЗЫВАМИ ---
-const rList = document.getElementById('reviewsList');
-const loadReviews = async () => {
-    if (!rList) return;
-    try {
-        const q = query(collection(db, "reviews"), orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        rList.innerHTML = '';
-        snap.forEach(d => {
-            const data = d.data();
-            rList.innerHTML += `
-                <div class="info-block" style="background:#fff; border: 1px solid #f0f0f0;">
-                    <p style="font-style: italic; color: #444; font-size: 1.1rem; margin-bottom: 20px;">"${data.text}"</p>
-                    <strong style="color: var(--gold); border-top: 1px solid #eee; display: block; padding-top: 15px;">— ${data.name}</strong>
-                </div>`;
-        });
-    } catch (e) { console.error("Ошибка при загрузке отзывов:", e); }
-};
-
-const rForm = document.getElementById('reviewForm');
-if (rForm) {
-    rForm.onsubmit = async (e) => {
-        e.preventDefault();
-        await addDoc(collection(db, "reviews"), {
-            name: rForm.revName.value,
-            text: rForm.revText.value,
-            createdAt: new Date()
-        });
-        rForm.reset(); loadReviews();
-    };
-}
-loadReviews();
-
-// --- 4. АДМИНИСТРАТИВНАЯ ПАНЕЛЬ ---
+// --- 5. ОБЩИЕ ФУНКЦИИ ---
 window.login = () => {
-    const user = document.getElementById('user').value;
-    const pass = document.getElementById('pass').value;
-    if(user === "Gulmira" && pass === "Aru-Ana-2020") {
+    const u = document.getElementById('user').value;
+    const p = document.getElementById('pass').value;
+    if (u === "Gulmira" && p === "Aru-Ana-2020") {
         localStorage.setItem('auth', 'true');
         window.location.href = "dashboard.html";
     } else {
@@ -146,80 +224,32 @@ window.login = () => {
 };
 
 window.logout = () => {
-    localStorage.removeItem('auth');
+    localStorage.clear();
     window.location.href = "index.html";
 };
 
-// Загрузка и фильтрация записей в дашборде
-const admBookingContainer = document.getElementById('bookingList');
-if (admBookingContainer) {
-    const filterS = document.getElementById('filterService');
-    const filterM = document.getElementById('filterMonth');
+// Запуск
+document.addEventListener('DOMContentLoaded', () => {
+    initMainPage();
+    loadReviews();
+    initAdmin();
 
-    // Наполняем фильтр услуг в админке
-    servicesDB.forEach(s => {
-        let opt = document.createElement('option');
-        opt.value = s.name; opt.innerText = s.name;
-        if(filterS) filterS.appendChild(opt);
-    });
+    const bf = document.getElementById('bookingForm');
+    if (bf) bf.onsubmit = handleBooking;
 
-    const loadAdminData = async () => {
-        const snap = await getDocs(query(collection(db, "bookings"), orderBy("createdAt", "desc")));
-        admBookingContainer.innerHTML = '';
-        
-        snap.forEach(item => {
-            const d = item.data();
-            const month = d.date.split('-')[1];
+    const rf = document.getElementById('reviewForm');
+    if (rf) rf.onsubmit = handleReview;
 
-            // Применяем фильтры
-            if (filterS && filterS.value && d.service !== filterS.value) return;
-            if (filterM && filterM.value && month !== filterM.value) return;
-
-            const cleanPhone = d.phone.replace(/\D/g, '');
-            const waMsg = encodeURIComponent(`Здравствуйте, ${d.name}! Вы записывались на ${d.service} (${d.date}). Хотим подтвердить ваш визит.`);
-
-            admBookingContainer.innerHTML += `
-                <div class="info-block" style="text-align:left; border-left: 5px solid var(--gold); position: relative;">
-                    <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px;">
-                        <a href="https://wa.me/${cleanPhone}?text=${waMsg}" target="_blank" style="background:#25D366; color:white; padding:8px 15px; border-radius:8px; text-decoration:none; font-size:0.9rem;">WhatsApp</a>
-                        <button onclick="delBooking('${item.id}')" style="background:#ff4444; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Удалить</button>
-                    </div>
-                    <strong style="font-size: 1.2rem;">${d.name}</strong><br>
-                    <a href="tel:${d.phone}" style="color: var(--gold); text-decoration: none; font-weight: 600;">${d.phone}</a><br>
-                    <p style="margin: 15px 0;">
-                        📅 <strong>Дата:</strong> ${d.date}<br>
-                        💆 <strong>Услуга:</strong> ${d.service}
-                    </p>
-                    ${d.comment ? `<div style="background:#f9f9f9; padding:15px; border-radius:10px; font-size:0.9rem; color:#666;">💬 ${d.comment}</div>` : ''}
-                </div>`;
-        });
-    };
-
-    if(filterS) filterS.onchange = loadAdminData;
-    if(filterM) filterM.onchange = loadAdminData;
-
-    window.delBooking = async (id) => {
-        if(confirm("Вы уверены, что хотите удалить эту запись?")) {
-            await deleteDoc(doc(db, "bookings", id));
-            loadAdminData();
-        }
-    };
-    loadAdminData();
-}
-
-// --- МОБИЛЬНОЕ МЕНЮ ---
-const burger = document.getElementById('mobile-menu');
-const navLinks = document.querySelector('.nav-links');
-if (burger) {
-    burger.onclick = () => {
-        navLinks.classList.toggle('nav-active');
-        burger.classList.toggle('toggle');
-    };
-}
-// Плавная прокрутка для ссылок
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-    });
+    const sel = document.getElementById('serviceSelect');
+    if (sel) sel.onchange = (e) => updatePriceDisplay(e.target.value);
+    
+    // Мобильное меню
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav-links');
+    if (burger) {
+        burger.onclick = () => {
+            nav.classList.toggle('nav-active');
+            burger.classList.toggle('toggle');
+        };
+    }
 });
