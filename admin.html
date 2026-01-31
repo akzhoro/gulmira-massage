@@ -2,36 +2,19 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход в систему | ARU-ANA</title>
+    <title>Вход в систему</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body style="display:flex; align-items:center; justify-content:center; height:100vh; background: linear-gradient(135deg, #fdfaf5 0%, #f4efdf 100%);">
-
-    <div class="admin-form" style="width: 100%; max-width: 450px; border-top: 5px solid var(--gold);">
-        <center>
-            <div class="logo" style="font-size: 2.5rem; margin-bottom: 10px;">ARU-ANA</div>
-            <p style="color: #888; margin-bottom: 40px;">Авторизация в панели управления</p>
-        </center>
-
-        <label style="display:block; margin-bottom:8px; font-weight:600; font-size:0.9rem; color:var(--dark);">Логин пользователя</label>
-        <input type="text" id="user" placeholder="Например: Admin" style="margin-bottom:25px;">
-
-        <label style="display:block; margin-bottom:8px; font-weight:600; font-size:0.9rem; color:var(--dark);">Пароль доступа</label>
-        <input type="password" id="pass" placeholder="••••••••" style="margin-bottom:30px;">
-
-        <button class="btn" onclick="login()" style="width:100%; letter-spacing:1px; font-size:1.1rem;">Войти в CRM</button>
-        
-        <p id="msg" style="color:#d32f2f; display:none; margin-top:25px; text-align:center; background:#ffebee; padding:12px; border-radius:10px;">
-            ⚠️ Ошибка: неверный логин или пароль.
-        </p>
-
-        <div style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 25px;">
-            <a href="index.html" style="color: var(--gold); text-decoration: none; font-weight: 600; font-size: 0.9rem;">← Вернуться на главный сайт</a>
-        </div>
+<body style="display:flex; align-items:center; justify-content:center; height:100vh;">
+    <div class="admin-form">
+        <h2 style="margin-bottom:30px;">Авторизация</h2>
+        <input type="text" id="user" placeholder="Логин">
+        <input type="password" id="pass" placeholder="Пароль">
+        <button class="btn" onclick="login()" style="width:100%;">Войти</button>
+        <p id="msg" style="color:red; display:none; margin-top:20px; text-align:center;">Неверный логин или пароль</p>
+        <br>
+        <center><a href="index.html" style="color:var(--gold); font-size:0.9rem;">Вернуться на сайт</a></center>
     </div>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
