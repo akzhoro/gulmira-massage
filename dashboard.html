@@ -2,19 +2,62 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Панель управления Aru-Ana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления | ARU-ANA CRM</title>
     <link rel="stylesheet" href="style.css">
-    <script>if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';</script>
+    <script>
+        if(localStorage.getItem('auth') !== 'true') window.location.href = 'admin.html';
+    </script>
+    <style>
+        .admin-header { background: #fff; padding: 40px 8%; border-bottom: 1px solid #eee; margin-bottom: 40px; }
+        .filter-bar { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 30px; }
+        .filter-bar select { padding: 12px 20px; border-radius: 12px; border: 1px solid #ddd; min-width: 200px; font-family: inherit; }
+        .admin-content { padding: 0 8% 100px; max-width: 1200px; margin: 0 auto; }
+        .booking-grid { display: grid; gap: 25px; }
+        .stats-card { background: var(--gold); color: white; padding: 20px; border-radius: 15px; text-align: center; }
+    </style>
 </head>
-<body style="padding-top: 100px;">
-    <nav>
-        <div class="logo">ARU-ANA ADMIN</div>
-        <button onclick="logout()" class="btn" style="padding:10px 20px; font-size:0.8rem;">Выйти</button>
+<body style="background: #f8f9fa;">
+
+    <nav style="position: sticky;">
+        <div class="logo">ARU-ANA CRM</div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <span style="font-weight: 600; color: var(--dark);">Администратор: Гульмира</span>
+            <button onclick="logout()" class="btn" style="padding: 10px 25px; font-size: 0.85rem; background: #333;">Выйти из системы</button>
+        </div>
     </nav>
-    <section>
-        <h2 style="margin-bottom:30px;">Записи на массаж</h2>
-        <div id="bookingList" style="max-width: 800px; margin: 0 auto;"></div>
-    </section>
+
+    <header class="admin-header">
+        <h1 style="text-align: left; margin-bottom: 10px;">Журнал записей</h1>
+        <p style="color: #888;">Управляйте своими клиентами, фильтруйте записи и подтверждайте визиты через WhatsApp.</p>
+        
+        <div class="filter-bar">
+            <select id="filterService">
+                <option value="">Все виды услуг</option>
+            </select>
+            <select id="filterMonth">
+                <option value="">Все месяцы</option>
+                <option value="01">Январь</option><option value="02">Февраль</option>
+                <option value="03">Март</option><option value="04">Апрель</option>
+                <option value="05">Май</option><option value="06">Июнь</option>
+                <option value="07">Июль</option><option value="08">Август</option>
+                <option value="09">Сентябрь</option><option value="10">Октябрь</option>
+                <option value="11">Ноябрь</option><option value="12">Декабрь</option>
+            </select>
+            <button onclick="location.reload()" class="btn" style="padding: 12px 25px; font-size: 0.9rem;">Обновить данные</button>
+        </div>
+    </header>
+
+    <main class="admin-content">
+        <div id="bookingList" class="booking-grid">
+            <div style="text-align: center; padding: 50px; color: #ccc;">Загрузка данных из базы...</div>
+        </div>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #aaa; font-size: 0.9rem;">
+        Система управления записями v2.0 | Разработано для Центра массажа Aru-Ana
+    </footer>
+
     <script type="module" src="script.js"></script>
 </body>
 </html>
