@@ -56,7 +56,7 @@ if (bookingForm) {
                 date: selectedDate,
                 service: bookingForm.service.value,
                 createdAt: new Date(),
-                month: month
+                month: month // Сохраняем месяц для фильтрации
             });
             
             // Показываем сообщение об успехе
@@ -107,7 +107,7 @@ window.logout = () => {
     window.location.href = "index.html";
 };
 
-// Переменные для фильтрации
+// ==================== ФИЛЬТРАЦИЯ ЗАПИСЕЙ ====================
 let allBookings = [];
 let activeFilters = {
     month: '',
@@ -116,8 +116,13 @@ let activeFilters = {
 
 // Применение фильтров по кнопке
 window.applyFilters = () => {
+    console.log('applyFilters вызвана');
+    
     const monthFilter = document.getElementById('monthFilter')?.value || '';
     const serviceFilter = document.getElementById('serviceFilter')?.value || '';
+    
+    console.log('Выбран месяц:', monthFilter);
+    console.log('Выбрана услуга:', serviceFilter);
     
     // Сохраняем активные фильтры
     activeFilters.month = monthFilter;
@@ -215,22 +220,58 @@ window.clearAllFilters = () => {
 
 // Фильтрация и отображение записей
 const filterAndRenderBookings = () => {
+    console.log('filterAndRenderBookings вызвана');
+    console.log('Всего записей:', allBookings.length);
+    console.log('Активные фильтры:', activeFilters);
+    
     let filtered = [...allBookings];
     
     // Фильтрация по месяцу
     if (activeFilters.month) {
+        console.log('Фильтруем по месяцу:', activeFilters.month);
         filtered = filtered.filter(item => {
-            if (!item.date) return false;
-            const itemMonth = item.date.split('-')[1];
-            return itemMonth === activeFilters.month;
+            if (!item.date) {
+                console.log('У записи нет даты:', item);
+                return false;
+            }
+            
+            // Проверяем разные форматы даты
+            let month;
+            if (item.date.includes('-')) {
+                // Формат YYYY-MM-DD
+                month = item.date.split('-')[1];
+            } else if (item.date.includes('.')) {
+                // Формат DD.MM.YYYY
+                month = item.date.split('.')[1];
+            } else {
+                // Попробуем создать Date объект
+                try {
+                    const dateObj = new Date(item.date);
+                    month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                } catch (e) {
+                    console.log('Не удалось разобрать дату:', item.date);
+                    return false;
+                }
+            }
+            
+            console.log('Дата записи:', item.date, 'Месяц:', month);
+            const result = month === activeFilters.month;
+            console.log('Результат фильтрации:', result);
+            return result;
         });
     }
     
     // Фильтрация по услуге
     if (activeFilters.service) {
-        filtered = filtered.filter(item => item.service === activeFilters.service);
+        console.log('Фильтруем по услуге:', activeFilters.service);
+        filtered = filtered.filter(item => {
+            const result = item.service === activeFilters.service;
+            console.log('Услуга:', item.service, 'Совпадение:', result);
+            return result;
+        });
     }
     
+    console.log('После фильтрации осталось:', filtered.length, 'записей');
     renderBookings(filtered);
 };
 
@@ -240,33 +281,58 @@ if (bookingList) {
     // Загрузка всех записей из Firebase
     const loadBookings = async () => {
         try {
+            console.log('Загрузка записей из Firebase...');
             const q = query(collection(db, "bookings"), orderBy("createdAt", "desc"));
             const snap = await getDocs(q);
             allBookings = [];
+            
             snap.forEach(item => {
                 const data = item.data();
-                allBookings.push({ 
+                console.log('Загружена запись:', data);
+                
+                // Нормализуем данные
+                const normalizedData = {
                     id: item.id, 
-                    ...data,
-                    createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt)
-                });
+                    name: data.name || 'Не указано',
+                    phone: data.phone || 'Не указан',
+                    date: data.date || '',
+                    service: data.service || 'Не указана',
+                    month: data.month || '', // Извлекаем сохранённый месяц
+                    createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt || Date.now())
+                };
+                
+                // Если месяц не сохранён, извлекаем из даты
+                if (!normalizedData.month && normalizedData.date) {
+                    if (normalizedData.date.includes('-')) {
+                        normalizedData.month = normalizedData.date.split('-')[1];
+                    }
+                }
+                
+                allBookings.push(normalizedData);
             });
+            
+            console.log('Всего загружено записей:', allBookings.length);
             
             // Применяем активные фильтры при загрузке
             filterAndRenderBookings();
             
         } catch (error) {
             console.error("Ошибка загрузки записей:", error);
-            bookingList.innerHTML = '<div class="info-block" style="text-align: center; color: #dc3545;">Ошибка загрузки данных</div>';
+            bookingList.innerHTML = '<div class="info-block" style="text-align: center; color: #dc3545;">Ошибка загрузки данных. Проверьте консоль.</div>';
         }
     };
     
     // Отображение записей
     const renderBookings = (bookings) => {
+        console.log('renderBookings вызвана с', bookings.length, 'записями');
         bookingList.innerHTML = '';
         
         if (bookings.length === 0) {
-            bookingList.innerHTML = '<div class="info-block" style="text-align: center; color: #666;">Записей не найдено</div>';
+            let message = 'Записей не найдено';
+            if (activeFilters.month || activeFilters.service) {
+                message = 'Записей по выбранным фильтрам не найдено';
+            }
+            bookingList.innerHTML = `<div class="info-block" style="text-align: center; color: #666;">${message}</div>`;
             document.getElementById('totalCount').textContent = '0';
             document.getElementById('filteredCount').textContent = '';
             return;
@@ -275,39 +341,60 @@ if (bookingList) {
         bookings.forEach(item => {
             const div = document.createElement('div');
             div.className = 'info-block';
+            div.style.position = 'relative';
+            div.style.paddingRight = '100px';
+            div.style.marginBottom = '20px';
             
-            // Форматирование даты
-            const dateObj = item.date ? new Date(item.date) : new Date();
-            const formattedDate = dateObj.toLocaleDateString('ru-RU', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
+            // Форматирование даты сеанса
+            let formattedDate = 'Не указана';
+            if (item.date) {
+                try {
+                    const dateObj = new Date(item.date);
+                    if (!isNaN(dateObj.getTime())) {
+                        formattedDate = dateObj.toLocaleDateString('ru-RU', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    }
+                } catch (e) {
+                    formattedDate = item.date;
+                }
+            }
             
             // Форматирование времени создания
-            const createdDate = item.createdAt instanceof Date ? item.createdAt : new Date(item.createdAt);
-            const formattedCreated = createdDate.toLocaleDateString('ru-RU', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            let formattedCreated = 'Не указано';
+            if (item.createdAt) {
+                try {
+                    const createdDate = item.createdAt instanceof Date ? item.createdAt : new Date(item.createdAt);
+                    if (!isNaN(createdDate.getTime())) {
+                        formattedCreated = createdDate.toLocaleDateString('ru-RU', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                } catch (e) {
+                    console.log('Ошибка форматирования даты создания:', e);
+                }
+            }
             
             div.innerHTML = `
                 <div style="margin-bottom: 10px;">
-                    <strong style="font-size: 1.1rem; color: var(--dark);">👤 ${item.name || 'Не указано'}</strong>
+                    <strong style="font-size: 1.1rem; color: var(--dark);">👤 ${item.name}</strong>
                 </div>
                 <div style="margin-bottom: 8px;">
-                    📞 <a href="tel:${item.phone || ''}" style="color: var(--gold); text-decoration: none;">
-                        ${item.phone || 'Не указан'}
+                    📞 <a href="tel:${item.phone}" style="color: var(--gold); text-decoration: none;">
+                        ${item.phone}
                     </a>
                 </div>
                 <div style="margin-bottom: 8px;">
                     📅 <strong>Дата сеанса:</strong> ${formattedDate}
                 </div>
                 <div style="margin-bottom: 8px;">
-                    💆 <strong>Услуга:</strong> ${item.service || 'Не указана'}
+                    💆 <strong>Услуга:</strong> ${item.service}
                 </div>
                 <div style="font-size: 0.85rem; color: #888; margin-top: 15px;">
                     📝 Запись создана: ${formattedCreated}
@@ -325,9 +412,10 @@ if (bookingList) {
         
         if (activeFilters.month || activeFilters.service) {
             document.getElementById('filteredCount').textContent = 
-                `(Отфильтровано: ${bookings.length} записей)`;
+                `(Отфильтровано: ${bookings.length} из ${allBookings.length} записей)`;
+            document.getElementById('filteredCount').style.display = 'block';
         } else {
-            document.getElementById('filteredCount').textContent = '';
+            document.getElementById('filteredCount').style.display = 'none';
         }
     };
     
@@ -336,6 +424,7 @@ if (bookingList) {
         if(confirm("Вы уверены, что хотите удалить эту запись?")) {
             try {
                 await deleteDoc(doc(db, "bookings", id));
+                console.log('Запись удалена:', id);
                 loadBookings();
             } catch (err) {
                 console.error("Ошибка удаления:", err);
@@ -388,3 +477,23 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// Добавляем глобальную функцию для отладки
+window.debugBookings = () => {
+    console.log('=== ДЕБАГ ИНФОРМАЦИЯ ===');
+    console.log('Всего записей:', allBookings.length);
+    console.log('Активные фильтры:', activeFilters);
+    console.log('Первые 5 записей:', allBookings.slice(0, 5));
+    
+    // Показываем все уникальные месяцы в данных
+    const uniqueMonths = [...new Set(allBookings.map(item => {
+        if (!item.date) return 'Нет даты';
+        if (item.date.includes('-')) return item.date.split('-')[1];
+        return 'Неизвестный формат';
+    }))];
+    console.log('Уникальные месяцы в данных:', uniqueMonths);
+    
+    // Показываем все уникальные услуги
+    const uniqueServices = [...new Set(allBookings.map(item => item.service))];
+    console.log('Уникальные услуги:', uniqueServices);
+};
