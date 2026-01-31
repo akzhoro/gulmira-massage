@@ -14,8 +14,53 @@
         <button onclick="logout()" class="btn" style="padding:10px 20px; font-size:0.8rem;">Выйти</button>
     </nav>
     <section>
-        <div id="bookingList">
+        <div style="display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; align-items: center;">
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Фильтр по месяцу:</label>
+                <select id="monthFilter" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                    <option value="">Все месяцы</option>
+                    <option value="01">Январь</option>
+                    <option value="02">Февраль</option>
+                    <option value="03">Март</option>
+                    <option value="04">Апрель</option>
+                    <option value="05">Май</option>
+                    <option value="06">Июнь</option>
+                    <option value="07">Июль</option>
+                    <option value="08">Август</option>
+                    <option value="09">Сентябрь</option>
+                    <option value="10">Октябрь</option>
+                    <option value="11">Ноябрь</option>
+                    <option value="12">Декабрь</option>
+                </select>
             </div>
+            <div>
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">Фильтр по услуге:</label>
+                <select id="serviceFilter" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; min-width: 250px;">
+                    <option value="">Все услуги</option>
+                    <option value="Детский общий массаж (0-5 лет)">Детский общий массаж (0-5 лет)</option>
+                    <option value="Детский общий массаж (5-10 лет)">Детский общий массаж (5-10 лет)</option>
+                    <option value="Детский общий массаж (10-15 лет)">Детский общий массаж (10-15 лет)</option>
+                    <option value="Детский общий массаж (15-18 лет)">Детский общий массаж (15-18 лет)</option>
+                    <option value="Женский общий массаж">Женский общий массаж</option>
+                    <option value="Мужской общий массаж">Мужской общий массаж</option>
+                    <option value="ШВЗ + Физио">ШВЗ + Физио</option>
+                    <option value="Спина + Физио">Спина + Физио</option>
+                    <option value="Антицеллюлитный ручной">Антицеллюлитный ручной</option>
+                    <option value="Аппаратная коррекция фигуры">Аппаратная коррекция фигуры</option>
+                    <option value="Аппаратный массаж лица">Аппаратный массаж лица</option>
+                    <option value="Миофасциальный массаж">Миофасциальный массаж</option>
+                    <option value="Массаж 5 Континентов">Массаж 5 Континентов</option>
+                    <option value="Физио">Физио</option>
+                </select>
+            </div>
+            <div style="margin-left: auto;">
+                <button onclick="clearFilters()" class="btn" style="background: #666; padding: 10px 20px;">Сбросить фильтры</button>
+            </div>
+        </div>
+        <div id="bookingList"></div>
+        <div id="totalCounter" style="margin-top: 30px; padding: 15px; background: #f5f5f5; border-radius: 10px; text-align: center;">
+            <strong>Всего записей: <span id="totalCount">0</span></strong>
+        </div>
     </section>
     <script type="module" src="script.js"></script>
 </body>
