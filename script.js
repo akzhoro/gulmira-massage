@@ -95,7 +95,6 @@ window.login = () => {
         msgElement.style.display = 'block';
         msgElement.style.animation = 'shake 0.5s';
         
-        // Сброс анимации через 0.5 секунды
         setTimeout(() => {
             msgElement.style.animation = '';
         }, 500);
@@ -108,18 +107,136 @@ window.logout = () => {
     window.location.href = "index.html";
 };
 
-// Сброс фильтров
-window.clearFilters = () => {
+// Переменные для фильтрации
+let allBookings = [];
+let activeFilters = {
+    month: '',
+    service: ''
+};
+
+// Применение фильтров по кнопке
+window.applyFilters = () => {
+    const monthFilter = document.getElementById('monthFilter')?.value || '';
+    const serviceFilter = document.getElementById('serviceFilter')?.value || '';
+    
+    // Сохраняем активные фильтры
+    activeFilters.month = monthFilter;
+    activeFilters.service = serviceFilter;
+    
+    // Обновляем отображение активных фильтров
+    updateActiveFiltersDisplay();
+    
+    // Применяем фильтры к данным
+    filterAndRenderBookings();
+};
+
+// Обновление отображения активных фильтров
+const updateActiveFiltersDisplay = () => {
+    const activeFiltersContainer = document.getElementById('activeFilters');
+    if (!activeFiltersContainer) return;
+    
+    activeFiltersContainer.innerHTML = '';
+    
+    const hasActiveFilters = activeFilters.month || activeFilters.service;
+    
+    if (!hasActiveFilters) {
+        activeFiltersContainer.style.display = 'none';
+        return;
+    }
+    
+    activeFiltersContainer.style.display = 'flex';
+    
+    // Добавляем тег для месяца
+    if (activeFilters.month) {
+        const monthNames = {
+            '01': 'Январь', '02': 'Февраль', '03': 'Март', '04': 'Апрель',
+            '05': 'Май', '06': 'Июнь', '07': 'Июль', '08': 'Август',
+            '09': 'Сентябрь', '10': 'Октябрь', '11': 'Ноябрь', '12': 'Декабрь'
+        };
+        
+        const monthTag = document.createElement('div');
+        monthTag.className = 'filter-tag';
+        monthTag.innerHTML = `
+            📅 ${monthNames[activeFilters.month]}
+            <button onclick="removeFilter('month')" class="clear-tag">×</button>
+        `;
+        activeFiltersContainer.appendChild(monthTag);
+    }
+    
+    // Добавляем тег для услуги
+    if (activeFilters.service) {
+        const serviceTag = document.createElement('div');
+        serviceTag.className = 'filter-tag';
+        serviceTag.innerHTML = `
+            💆 ${activeFilters.service}
+            <button onclick="removeFilter('service')" class="clear-tag">×</button>
+        `;
+        activeFiltersContainer.appendChild(serviceTag);
+    }
+    
+    // Добавляем кнопку сброса всех фильтров
+    const clearAllTag = document.createElement('div');
+    clearAllTag.className = 'filter-tag';
+    clearAllTag.style.background = '#ffebee';
+    clearAllTag.style.borderColor = '#dc3545';
+    clearAllTag.innerHTML = `
+        ❌ Очистить все
+        <button onclick="clearAllFilters()" class="clear-tag" style="color: #dc3545;">×</button>
+    `;
+    activeFiltersContainer.appendChild(clearAllTag);
+};
+
+// Удаление конкретного фильтра
+window.removeFilter = (filterType) => {
+    activeFilters[filterType] = '';
+    
+    // Сбрасываем соответствующий select
+    if (filterType === 'month') {
+        document.getElementById('monthFilter').value = '';
+    } else if (filterType === 'service') {
+        document.getElementById('serviceFilter').value = '';
+    }
+    
+    updateActiveFiltersDisplay();
+    filterAndRenderBookings();
+};
+
+// Очистка всех фильтров
+window.clearAllFilters = () => {
+    activeFilters.month = '';
+    activeFilters.service = '';
+    
     document.getElementById('monthFilter').value = '';
     document.getElementById('serviceFilter').value = '';
-    loadBookings();
+    
+    updateActiveFiltersDisplay();
+    filterAndRenderBookings();
+};
+
+// Фильтрация и отображение записей
+const filterAndRenderBookings = () => {
+    let filtered = [...allBookings];
+    
+    // Фильтрация по месяцу
+    if (activeFilters.month) {
+        filtered = filtered.filter(item => {
+            if (!item.date) return false;
+            const itemMonth = item.date.split('-')[1];
+            return itemMonth === activeFilters.month;
+        });
+    }
+    
+    // Фильтрация по услуге
+    if (activeFilters.service) {
+        filtered = filtered.filter(item => item.service === activeFilters.service);
+    }
+    
+    renderBookings(filtered);
 };
 
 // ==================== УПРАВЛЕНИЕ ЗАПИСЯМИ ====================
 const bookingList = document.getElementById('bookingList');
 if (bookingList) {
-    let allBookings = [];
-    
     // Загрузка всех записей из Firebase
     const loadBookings = async () => {
         try {
@@ -131,49 +248,27 @@ if (bookingList) {
                 allBookings.push({ 
                     id: item.id, 
                     ...data,
-                    // Конвертируем Timestamp в Date
                     createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt)
                 });
             });
             
-            applyFilters();
+            // Применяем активные фильтры при загрузке
+            filterAndRenderBookings();
+            
         } catch (error) {
             console.error("Ошибка загрузки записей:", error);
             bookingList.innerHTML = '<div class="info-block" style="text-align: center; color: #dc3545;">Ошибка загрузки данных</div>';
         }
     };
     
-    // Применение фильтров
-    const applyFilters = () => {
-        const monthFilter = document.getElementById('monthFilter')?.value || '';
-        const serviceFilter = document.getElementById('serviceFilter')?.value || '';
-        
-        let filtered = [...allBookings];
-        
-        // Фильтрация по месяцу
-        if (monthFilter) {
-            filtered = filtered.filter(item => {
-                if (!item.date) return false;
-                const itemMonth = item.date.split('-')[1];
-                return itemMonth === monthFilter;
-            });
-        }
-        
-        // Фильтрация по услуге
-        if (serviceFilter) {
-            filtered = filtered.filter(item => item.service === serviceFilter);
-        }
-        
-        renderBookings(filtered);
-    };
-    
-    // Отображение отфильтрованных записей
+    // Отображение записей
     const renderBookings = (bookings) => {
         bookingList.innerHTML = '';
         
         if (bookings.length === 0) {
             bookingList.innerHTML = '<div class="info-block" style="text-align: center; color: #666;">Записей не найдено</div>';
             document.getElementById('totalCount').textContent = '0';
+            document.getElementById('filteredCount').textContent = '';
             return;
         }
         
@@ -225,8 +320,15 @@ if (bookingList) {
             bookingList.appendChild(div);
         });
         
-        // Обновляем счетчик
-        document.getElementById('totalCount').textContent = bookings.length;
+        // Обновляем счетчики
+        document.getElementById('totalCount').textContent = allBookings.length;
+        
+        if (activeFilters.month || activeFilters.service) {
+            document.getElementById('filteredCount').textContent = 
+                `(Отфильтровано: ${bookings.length} записей)`;
+        } else {
+            document.getElementById('filteredCount').textContent = '';
+        }
     };
     
     // Удаление записи
@@ -241,18 +343,6 @@ if (bookingList) {
             }
         }
     };
-    
-    // Инициализация фильтров
-    const monthFilter = document.getElementById('monthFilter');
-    const serviceFilter = document.getElementById('serviceFilter');
-    
-    if (monthFilter) {
-        monthFilter.addEventListener('change', applyFilters);
-    }
-    
-    if (serviceFilter) {
-        serviceFilter.addEventListener('change', applyFilters);
-    }
     
     // Загрузка записей при загрузке страницы
     loadBookings();
@@ -274,6 +364,10 @@ style.textContent = `
         0%, 100% { transform: translateX(0); }
         10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
         20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
     }
 `;
 document.head.appendChild(style);
